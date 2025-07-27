@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ज्ञान की बाते </title>
+  <link rel="shortcut icon" href="./ज्ञान की बाते logo.png" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+ 
+</head>
+<body>
+
+  <div class="header">
+    <h1>ज्ञान की बाते </h1>
+    <div class="sub-header">मस्‍ती के साथ</div>
+  </div>
+
+  <div class="nav">
+    <a href="#">Home</a>
+    <a href="#">Latest Jobs</a>
+    <a href="#">Admit Card</a>
+    <a href="#">Results</a>
+    <a href="#">University Update</a>
+    <a href="#">Sarkari Yojana</a>
+    <a href="#">Scholarship</a>
+  </div>
+
+<!-- ...existing code... -->
+<!-- Search Bar -->
+<div style="text-align: center; margin-top: 20px;">
+  <input type="text" id="searchInput" placeholder="Search in Gyan Ki Bate..." style="padding: 10px; width: 60%; border-radius: 5px; border: 1px solid #ccc;">
+  <button onclick="highlightText()" style="padding: 10px 20px; background: #0073e6; color: white; border: none; border-radius: 5px;">Search</button>
+</div>
+<!-- ...existing code... -->
+    
+<style>
+  .highlight { background: yellow; font-weight: bold; }
+</style>
+<script>
+function highlightText() {
+  const input = document.getElementById("searchInput").value.trim();
+  const section = document.getElementById("searchSection");
+  // Remove old highlights
+  section.innerHTML = section.innerHTML.replace(/<span class="highlight">(.*?)<\/span>/g, "$1");
+  if (!input) return;
+  // Highlight new search
+  const regex = new RegExp(input, "gi");
+  section.innerHTML = section.innerHTML.replace(regex, match => `<span class="highlight">${match}</span>`);
+}
+</script>
+<!-- ...existing code... -->
+
+
+
+  <div class="social-buttons">
+    <a class="youtube" href="#">📺 Our YouTube Channel</a>
+    <a class="whatsapp" href="https://chat.whatsapp.com/KFeFeRYVr73JMrtXXzpl4g">💬 Join Whatsapp Group</a>
+    <a class="telegram" href="#">📢 Join Us On Telegram</a>
+  </div>
+
+  <div class="section" id="searchSection">
+
+  <div class="important-links">
+    <a href="#">CSC ID REGISTRATION 2025 ऑनलाइन आवेदन करें</a>
+    <a href="#">PM इंटर्नशिप पोर्टल ऑनलाइन रजिस्ट्रेशन</a>
+    <a href="#">BIHAR POST MATRIC SCHOLARSHIP 2025 APPLY</a>
+    <a href="#">जाति, निवास, आय यहाँ से APPLY & DOWNLOAD करें</a>
+    <a href="#">बिहार राशन कार्ड 2025 ऑनलाइन अपडेट</a>
+  </div>
+
+  <div class="section">
+    <div class="box">
+      <h2>Latest Update</h2>
+         <p>SSC CHSL Online Form Correction 2025 | SSC CHSL Form Edit Modify Correction Kaise Kare 2025</p>
+    <p>PM Yojana 2025 has started for students. Apply online now.</p>
+    <p>Railway Recruitment 2025 online form is available. Fill it before last date.</p>
+    <p>CSC ID registration is now open for rural entrepreneurs in Bihar.</p>        
+    <p>Bihar Board Result 2025 has been released. You can download the result from the official website.</p>    
+    <p>Latest Job Updates: Bihar Board Result 2025, PM Yojana 2025, Railway Recruitment 2025, CSC ID Registration.</p>
+    
+      <p>SSC CHSL Online Form Correction 2025 | SSC CHSL Form Edit Modify Correction Kaise Kare 2025</p>
+    </div>
+    <div class="box">
+      <h2>Latest Jobs</h2>
+      <p>Railway Technician Vacancy 2025 - रेलवे में 6180 पदों पर भर्ती आ रही है, पूरी डिटेल यहां देखें।</p>
+    </div>
+    <div class="box">
+      <h2>Sarkari Yojana</h2>
+      <p>Shadishuda Mahila ka Jati Praman Patra kaise Banaye – शादीशुदा महिला का जाति प्रमाण पत्र कैसे बनाएं?</p>
+    </div>
+  </div>
+  </div>
+
+
+</body>
+</html>

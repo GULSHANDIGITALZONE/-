@@ -1,0 +1,145 @@
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f3f3f3;
+    }
+
+    /* Header */
+    .header {
+      background: #0073e6;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+    }
+
+    .sub-header {
+      font-size: 16px;
+      color: yellow;
+    }
+
+    /* Nav */
+    .nav {
+      background: red;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .nav a {
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      display: block;
+    }
+
+    .nav a:hover {
+      background: darkred;
+    }
+
+    /* Search */
+    .search-box {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .search-box input {
+      padding: 10px;
+      width: 60%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .search-box button {
+      padding: 10px 20px;
+      background: #0073e6;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-left: 5px;
+    }
+
+    /* Social buttons */
+    .social-buttons {
+      text-align: center;
+      margin: 15px 0;
+    }
+
+    .social-buttons a {
+      padding: 10px 20px;
+      margin: 5px;
+      display: inline-block;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .youtube { background: #FF0000; }
+    .whatsapp { background: #25D366; }
+    .telegram { background: #0088cc; }
+
+    /* Important links */
+    .important-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      background: #005cbf;
+      padding: 15px;
+    }
+
+    .important-links a {
+      background: white;
+      color: #005cbf;
+      padding: 10px;
+      border-radius: 5px;
+      font-weight: bold;
+      text-align: center;
+      width: 300px;
+      text-decoration: none;
+    }
+
+    /* Section boxes */
+    .section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 15px;
+    }
+
+    .box {
+      background: white;
+      width: 30%;
+      min-width: 300px;
+      border-radius: 5px;
+      padding: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .box h2 {
+      background: #0073e6;
+      color: white;
+      padding: 10px;
+      font-size: 18px;
+      border-radius: 5px 5px 0 0;
+      margin: -15px -15px 15px -15px;
+    }
+
+    .box p {
+      font-size: 14px;
+    }
+
+    @media(max-width: 768px) {
+      .box {
+        width: 90%;
+      }
+
+      .important-links a {
+        width: 90%;
+      }
+    }
