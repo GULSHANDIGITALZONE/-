@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ज्ञान की बाते </title>
   <link rel="shortcut icon" href="./ज्ञान की बाते logo.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+     integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="style.css">
  
 </head>
@@ -25,35 +28,140 @@
     <a href="#">Scholarship</a>
   </div>
 
-<!-- ...existing code... -->
 <!-- Search Bar -->
 <div style="text-align: center; margin-top: 20px;">
-  <input type="text" id="searchInput" placeholder="Search in Gyan Ki Bate..." style="padding: 10px; width: 60%; border-radius: 5px; border: 1px solid #ccc;">
+  <input type="text" id="searchInput" placeholder="Search in Gyan Ki Bate..." style="padding: 10px; width: 60%; border-radius: 5px; border: 1px solid #ccc;" onkeydown="if(event.key==='Enter'){highlightText();}">
   <button onclick="highlightText()" style="padding: 10px 20px; background: #0073e6; color: white; border: none; border-radius: 5px;">Search</button>
 </div>
-<!-- ...existing code... -->
-    
+
+<!-- Add these styles in your <style> tag -->
 <style>
   .highlight { background: yellow; font-weight: bold; }
+  .highlight.active { background: orange; }
+  .search-nav-arrows {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    position: fixed;
+    top: 120px;
+    right: 40px;
+    z-index: 999;
+  }
+  .search-nav-arrows button {
+    padding: 12px 18px;
+    font-size: 1.5rem;
+    background: #0073e6;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    transition: background 0.2s;
+  }
+  .search-nav-arrows button:disabled {
+    background: #ccc;
+    color: #666;
+    cursor: not-allowed;
+  }
 </style>
+
+<!-- Place this just below your search bar -->
+<div class="search-nav-arrows" id="searchNavArrows" style="display:none;">
+  <button onclick="gotoPrevHighlight()" id="prevBtn">⬆️</button>
+  <button onclick="gotoNextHighlight()" id="nextBtn">⬇️</button>
+</div>
+
 <script>
+let highlightElements = [];
+let currentHighlight = -1;
+
 function highlightText() {
   const input = document.getElementById("searchInput").value.trim();
   const section = document.getElementById("searchSection");
-  // Remove old highlights
-  section.innerHTML = section.innerHTML.replace(/<span class="highlight">(.*?)<\/span>/g, "$1");
-  if (!input) return;
-  // Highlight new search
-  const regex = new RegExp(input, "gi");
-  section.innerHTML = section.innerHTML.replace(regex, match => `<span class="highlight">${match}</span>`);
+
+  // Store original HTML if not already stored
+  if (!section.dataset.original) {
+    section.dataset.original = section.innerHTML;
+  }
+
+  // If search is empty, restore original HTML and exit
+  if (!input) {
+    section.innerHTML = section.dataset.original;
+    document.getElementById("searchNavArrows").style.display = "none";
+    highlightElements = [];
+    currentHighlight = -1;
+    return;
+  }
+
+  // Remove old highlights by restoring original HTML
+  section.innerHTML = section.dataset.original;
+
+  let found = false;
+  highlightElements = [];
+  currentHighlight = -1;
+
+  // Highlight new search (only in text nodes, not tags)
+  function highlightNode(node) {
+    if (node.nodeType === 3) { // Text node
+      const regex = new RegExp(input, "gi");
+      if (regex.test(node.nodeValue)) found = true;
+      const replaced = node.nodeValue.replace(regex, match => `<span class="highlight">${match}</span>`);
+      if (replaced !== node.nodeValue) {
+        const span = document.createElement("span");
+        span.innerHTML = replaced;
+        node.parentNode.replaceChild(span, node);
+      }
+    } else if (node.nodeType === 1 && node.childNodes) { // Element node
+      node.childNodes.forEach(highlightNode);
+    }
+  }
+  highlightNode(section);
+
+  // Collect all highlights
+  highlightElements = Array.from(section.querySelectorAll('.highlight'));
+
+  if (!found || highlightElements.length === 0) {
+    section.innerHTML = `<div style="text-align:center; color:red; font-size:1.3rem; margin:40px 0;">No Result Found</div>`;
+    document.getElementById("searchNavArrows").style.display = "none";
+    return;
+  }
+
+  // Show arrows if more than 1 highlight
+  document.getElementById("searchNavArrows").style.display = highlightElements.length > 0 ? "block" : "none";
+  gotoHighlight(0);
+}
+
+function gotoHighlight(index) {
+  if (highlightElements.length === 0) return;
+  // Remove active class from all
+  highlightElements.forEach(el => el.classList.remove('active'));
+  // Clamp index
+  if (index < 0) index = 0;
+  if (index >= highlightElements.length) index = highlightElements.length - 1;
+  currentHighlight = index;
+  // Add active class to current
+  highlightElements[currentHighlight].classList.add('active');
+  // Scroll to it
+  highlightElements[currentHighlight].scrollIntoView({behavior: "smooth", block: "center"});
+  // Enable/disable buttons
+  document.getElementById("prevBtn").disabled = (currentHighlight === 0);
+  document.getElementById("nextBtn").disabled = (currentHighlight === highlightElements.length - 1);
+}
+
+function gotoPrevHighlight() {
+  if (currentHighlight > 0) gotoHighlight(currentHighlight - 1);
+}
+
+function gotoNextHighlight() {
+  if (currentHighlight < highlightElements.length - 1) gotoHighlight(currentHighlight + 1);
 }
 </script>
-<!-- ...existing code... -->
 
 
 
   <div class="social-buttons">
-    <a class="youtube" href="#">📺 Our YouTube Channel</a>
+    <a class="youtube" href="https://www.youtube.com/@gulshandigitalzone">📺 Our YouTube Channel</a>
     <a class="whatsapp" href="https://chat.whatsapp.com/KFeFeRYVr73JMrtXXzpl4g">💬 Join Whatsapp Group</a>
     <a class="telegram" href="#">📢 Join Us On Telegram</a>
   </div>
@@ -61,16 +169,17 @@ function highlightText() {
   <div class="section" id="searchSection">
 
   <div class="important-links">
+    <a href="#">जाति, निवास, आय यहाँ से APPLY करें</a>
+    <a href="#">जाति, निवास, आय यहाँ से DOWNLOAD करें</a>
     <a href="#">CSC ID REGISTRATION 2025 ऑनलाइन आवेदन करें</a>
     <a href="#">PM इंटर्नशिप पोर्टल ऑनलाइन रजिस्ट्रेशन</a>
     <a href="#">BIHAR POST MATRIC SCHOLARSHIP 2025 APPLY</a>
-    <a href="#">जाति, निवास, आय यहाँ से APPLY & DOWNLOAD करें</a>
     <a href="#">बिहार राशन कार्ड 2025 ऑनलाइन अपडेट</a>
   </div>
 
   <div class="section">
     <div class="box">
-      <h2>Latest Update</h2>
+      <h2>LATEST JOB</h2>
          <p>SSC CHSL Online Form Correction 2025 | SSC CHSL Form Edit Modify Correction Kaise Kare 2025</p>
     <p>PM Yojana 2025 has started for students. Apply online now.</p>
     <p>Railway Recruitment 2025 online form is available. Fill it before last date.</p>
@@ -81,228 +190,93 @@ function highlightText() {
       <p>SSC CHSL Online Form Correction 2025 | SSC CHSL Form Edit Modify Correction Kaise Kare 2025</p>
     </div>
     <div class="box">
-
-
-
-
-
-      
-      <h2>Latest Jobs</h2>
+      <h2>ADMIT CARD or RESULTS</h2>
       <p>Railway Technician Vacancy 2025 - रेलवे में 6180 पदों पर भर्ती आ रही है, पूरी डिटेल यहां देखें।</p>
-      <!-- Microsoft Software Engineer -->
-<div class="job-card">
-  <h3>Software Engineer – Microsoft</h3>
-  <p>Location: Bengaluru / Hyderabad, India</p>
-  <a href="https://www.microsoft.com/careers" target="_blank">
-    <button>Apply Now</button>
-  </a>
-</div>
-
-<!-- Amazon SDE‑1 -->
-<div class="job-card">
-  <h3>SDE‑1 – Amazon</h3>
-  <p>Location: Bengaluru, India</p>
-  <a href="https://www.amazon.jobs/en/jobs/2849985/software-development-engineer-i-2025" target="_blank">
-    <button>Apply Now</button>
-  </a>
-</div>
-
-<!-- Infosys React JS Developer -->
-<div class="job-card">
-  <h3>React JS Developer – Infosys</h3>
-  <p>Location: Bengaluru East, Karnataka, India</p>
-  <a href="https://www.infosys.com/careers" target="_blank">
-    <button>Apply Now</button>
-  </a>
-</div>
-
-<!-- Meril Applied AI Engineer Fresher -->
-<div class="job-card">
-  <h3>Applied AI Engineer Fresher – Meril</h3>
-  <p>Location: Vapi, Gujarat, India</p>
-  <a href="https://www.linkedin.com/jobs/search/?keywords=Meril%20Applied%20AI%20Engineer%20Fresher" target="_blank">
-    <button>Apply Now</button>
-  </a>
-</div>
-
-<!-- NeuroLinkX Software Developer Intern -->
-<div class="job-card">
-  <h3>Software Developer / Fresher Intern – NeuroLinkX</h3>
-  <p>Location: Remote, India</p>
-  <a href="https://www.linkedin.com/jobs/search/?keywords=NeuroLinkX%20Software%20Developer%20Fresher" target="_blank">
-    <button>Apply Now</button>
-  </a>
-</div>
-
     </div>
     <div class="box">
-      <div class="job-card">
-  <h3>Enforcement Officer / APFC – UPSC⋅EPFO</h3>
-  <p>Posts: 230 | Apply by: 18 Aug 2025</p>
-  <a href="https://upsconline.nic.in" target="_blank">
-    <button style="background-color: #007bff; color: white; padding: 8px 16px; border: none; border-radius: 5px;">
-      Apply Now
-    </button>
-  </a>
-</div>
-
-<div class="job-card">
-  <h3>Security Assistant / Executive – Intelligence Bureau</h3>
-  <p>Vacancies: 4,987 | Qualification: Class 10</p>
-  <a href="https://mha.gov.in" target="_blank">
-    <button style="background-color: #007bff; color: white; padding: 8px 16px; border: none; border-radius: 5px;">
-      Apply Now
-    </button>
-  </a>
-</div>
-
-<div class="job-card">
-  <h3>TGT (Trained Graduate Teacher) – UPPSC</h3>
-  <p>Vacancies: 7,466 | Apply: 1–21 Aug 2025</p>
-  <a href="https://uppsc.gov.in" target="_blank">
-    <button style="background-color: #007bff; color: white; padding: 8px 16px; border: none; border-radius: 5px;">
-      Apply Now
-    </button>
-  </a>
-</div>
-
-<div class="job-card">
-  <h3>Constable (Tradesman) – BSF</h3>
-  <p>Vacancies: ~3,588 | Qualification: Class 10 + technical skill</p>
-  <a href="https://rectt.bsf.gov.in" target="_blank">
-    <button style="background-color: #007bff; color: white; padding: 8px 16px; border: none; border-radius: 5px;">
-      Apply Now
-    </button>
-  </a>
-</div>
-
-<div class="job-card">
-  <h3>JBT (Junior Basic Teacher) – Chandigarh</h3>
-  <p>Vacancies: 218 | Apply: 7–28 Aug 2025</p>
-  <a href="https://ssachd.nic.in" target="_blank">
-    <button style="background-color: #007bff; color: white; padding: 8px 16px; border: none; border-radius: 5px;">
-      Apply Now
-    </button>
-  </a>
-</div>
-
-<div class="job-card">
-  <h3>School Lecturer – RPSC⋅Rajasthan</h3>
-  <p>Vacancies: 3,225 | Subjects: Hindi, English, Maths, Science</p>
-  <a href="https://rpsc.rajasthan.gov.in" target="_blank">
-    <button style="background-color: #007bff; color: white; padding: 8px 16px; border: none; border-radius: 5px;">
-      Apply Now
-    </button>
-  </a>
-</div>
-<!-- Pradhan Mantri Surya Ghar Muft Bijli Yojana -->
-<div class="job-card">
-  <h3>Pradhan Mantri Surya Ghar Muft Bijli Yojana</h3>
-  <p>Subsidy ₹30k–₹78k for rooftop solar; Free 300 units/month</p>
-  <a href="https://pmsuryaghar.gov.in" target="_blank">
-    <button style="background-color:#007bff;color:white;padding:8px 16px;border:none;border-radius:5px;">
-      Learn More
-    </button>
-  </a>
-</div>
-
-<!-- Pradhan Mantri Kisan Mandhan Yojana -->
-<div class="job-card">
-  <h3>Pradhan Mantri Kisan Mandhan Yojana</h3>
-  <p>Eligibility: Farmers aged 18–40; Pension ₹3,000/month</p>
-  <a href="https://eshram.gov.in" target="_blank">
-    <button style="background-color:#007bff;color:white;padding:8px 16px;border:none;border-radius:5px;">
-      Learn More
-    </button>
-  </a>
-</div>
-
-<!-- Subhadra Yojana – Odisha -->
-<div class="job-card">
-  <h3>Subhadra Yojana – Odisha</h3>
-  <p>Women aged 21‑60 get ₹50,000 over 5 years (₹10k/year)</p>
-  <a href="https://subhadrayojanaodisha.org/" target="_blank">
-    <button style="background-color:#007bff;color:white;padding:8px 16px;border:none;border-radius:5px;">
-      Learn More
-    </button>
-  </a>
-</div>
-
-<!-- PM Viksit Bharat Rojgar Yojana -->
-<div class="job-card">
-  <h3>PM Viksit Bharat Rojgar Yojana</h3>
-  <p>New job seekers receive ₹15,000; applies from Aug 1, 2025</p>
-  <a href="https://www.pmvrby.gov.in" target="_blank">
-    <button style="background-color:#007bff;color:white;padding:8px 16px;border:none;border-radius:5px;">
-      Learn More
-    </button>
-  </a>
-</div>
-
-<!-- National Broadband Mission 2.0 -->
-<div class="job-card">
-  <h3>National Broadband Mission 2.0</h3>
-  <p>High-speed broadband to 2.7L villages; connectivity ≥100 Mbps by 2030</p>
-  <a href="https://broadband.gov.in" target="_blank">
-    <button style="background-color:#007bff;color:white;padding:8px 16px;border:none;border-radius:5px;">
-      Learn More
-    </button>
-  </a>
-</div>
-
-
-
-
-
-
-
-      
-      <h2>Sarkari Yojana</h2>
+      <h2>IMPORTANT LINKS</h2>
       <p>Shadishuda Mahila ka Jati Praman Patra kaise Banaye – शादीशुदा महिला का जाति प्रमाण पत्र कैसे बनाएं?</p>
-      <style>
-  .job-card {
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin: 15px 0;
-    border-radius: 10px;
-  }
-  .details {
-    display: none;
-    margin-top: 10px;
-    background: #f2f2f2;
-    padding: 10px;
-    border-radius: 5px;
-  }
-</style>
-
-<!-- Bihar Sarkari Niyam Card Example -->
-
-<div class="job-card">
-  <h3>नया जाति प्रमाण पत्र नियम – बिहार</h3>
-  <p>2025 से सभी जाति प्रमाण पत्र 100% ऑनलाइन होंगे</p>
-  <button onclick="toggleDetails(this)" style="background-color:#007bff;color:white;padding:8px 16px;border:none;border-radius:5px;">
-    Learn More
-  </button>
-  <div class="details">
-    <strong>नियम:</strong> अब जाति प्रमाण पत्र के लिए आवेदन केवल <a href="https://serviceonline.bihar.gov.in/" target="_blank">serviceonline.bihar.gov.in</a> से किया जाएगा।  
-    <br><strong>Documents:</strong> आधार, निवास प्रमाण पत्र, स्कूल सर्टिफिकेट  
-    <br><strong>Processing Time:</strong> 7 कार्य दिवस  
-    <br><strong>Fees:</strong> ₹10–₹20  
-  </div>
-</div>
-
-<script>
-  function toggleDetails(btn) {
-    const details = btn.nextElementSibling;
-    const isVisible = details.style.display === "block";
-    details.style.display = isVisible ? "none" : "block";
-    btn.textContent = isVisible ? "Learn More" : "Learn Less";
-  }
-</script>
     </div>
   </div>
   </div>
 
+  <footer>
+                  <h1 style="color: #abf00a; text-align: center; background-color: #ff0000;">Any help</h1>
+
+       
+            <h1>
+                <div class="fruit" >
+                    <div class="item6"><a href="https://forms.gle/8rKVwfCvcWrBiQQN9">Cyber cafe Releted</a></div>
+                    <div class="item2"><a href="https://youtube.com/@gulshandigitalzone?si=YDIQ_hvKnwjShGRa"><i class="fa-brands fa-youtube"></i>youtube</a></div>
+                    <div class="item3">
+                        <form id="feedbackForm">
+                        <input style="background-color: #fbff00;" type="" id="inputField" name="inputField" placeholder="Any suggestion or feedback" required>
+                        <button type="submit">Send</button>
+                    </form></div>
+                    <div class="item4"><a href="mailto:gulshankumardariyapur85885@gmail.com"><i class="fa-solid fa-envelope"></i>Email</a></div>
+                    <div class="item5"> 
+                        <form id="customForm">
+                        <input style="background-color: #fbff00;" type="email" id="Subscribe.Id" name="inputField" placeholder="Enter email" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+                    <div class="item1"><a href="tel:+6299050695"><i class="fa-sharp fa-solid fa-phone-volume"></i> <i class="fa-brands fa-whatsapp"></i>Call or What's app</a>
+                    </div>
+                    <div class="item7"><a href="https://www.google.com/maps/place/GULSHAN+DIGITAL+ZONE/@25.1608555,85.9283995,21z/data=!4m6!3m5!1s0x39f241d4005bf849:0xc81c1bd024015bb8!8m2!3d25.160834!4d85.928542!16s%2Fg%2F11w48v47kf?entry=ttu&g_ep=EgoyMDI0MTExMy4xIKXMDSoASAFQAw%3D%3D"><i class="fa-solid fa-location-dot"></i>Location</a></div>
+                    <div class="item8"><a href="#" onclick="showAbout()">About</a></div>
+                    <div class="item9"><a href="#" onclick="showAbout()">privacy-policy</a></div>
+                </div>
+            </h1>
+            <div id="aboutModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeAbout()">&times; </span>
+                    <h1 style="text-align: center;">About Us</h1>
+                    <p>यह वेवसाट RS GULSHAN PRAJAPATI JI के द्वारा बनाया गया है । यह वेवसाइट सरकारी तो नही है लेकिन मानवता को देखते हुए बनाया गया है <br> 
+                        इस वेवसाइट का उद्देश्य लोगों को विभिन्न सरकारी सेवाओं और सूचनाओं तक आसान पहुंच प्रदान करना है।
+                         हम विभिन्न प्रकार की सेवाएं और जानकारी प्रदान करते हैं, जैसे कि नौकरी के आवेदन, महत्वपूर्ण लिंक, एडमिट कार्ड,
+                         और अन्य महत्वपूर्ण वेबसाइटों के लिंक। हमारा लक्ष्य है कि हम लोगों की मदद करें और उन्हें सही जानकारी और सेवाएं प्रदान करें। <a href="tel:+916299050695">Call: +916299050695</a>
+                         <a href="mailto:gulshandigitalzonq@gmail.com">Email: gulshandigitalzone@gmail.com</a>
+                     </p>                    
+                    <h1 style="text-align: center;">Privacy Policy</h1>
+                    <p>यह वेबसाइट किसी प्रकार का धोखा नहीं करती है। वेबसाइट की पहचान हमारे लोगो, कॉल, या ईमेल से पुष्टि करने के बाद ही भुगतान करें। 
+                        बिना जांचे भुगतान करने पर आपकी जिम्मेदारी होगी। हालांकि, नकली वेबसाइट होने पर आप मुझे कॉल या ईमेल कर सकते हैं।<br>
+                     हम आपकी गोपनीयता का सम्मान करते हैं और आपकी व्यक्तिगत जानकारी की सुरक्षा के लिए प्रतिबद्ध हैं। 
+                    हम आपकी जानकारी को किसी भी तीसरे पक्ष के साथ साझा नहीं करते हैं, सिवाय जब यह कानूनी रूप से आवश्यक हो। 
+                    हम आपकी जानकारी का उपयोग केवल आपके अनुभव को बेहतर बनाने और आपको बेहतर सेवाएं प्रदान करने के लिए करते हैं। 
+                    <br> कृपया ध्यान दें कि हमारी वेबसाइट का उपयोग करते समय, आप हमारी गोपनीयता नीति से सहमत होते हैं। 
+                    यदि आपके पास कोई प्रश्न या चिंताएं हैं, तो कृपया हमसे संपर्क करें।</p>
+
+                </div>
+            </div>
+            <script src="script.js"></script>
+        </footer>
+          
+             
+            <br><br>
+            <h6 style="background-color: rgb(0, 0, 0);">.</h6>
+
+            <h5 style="text-align: center; font-size: 20px;">&copy; 2024 GULSHAN DIGITAL ZONE   Devloped By:- RS GULSHAN PRAJAPATI <br>
+              <a href="https://twitter.com/gulshandigitalzone"><i class="fa-brands fa-twitter" style="color: #0c69e4;"></i></a>
+              <a href="https://www.facebook.com/gulshandigitalzone"><i class="fa-brands fa-facebook" style="color: #3b5998;"></i></a>
+              <a href="https://www.instagram.com/gulshandigitalzone/"><i class="fa-brands fa-instagram" style="color: #e1306c;"></i></a>
+              <a href="https://www.linkedin.com/in/gulshandigitalzone"><i class="fa-brands fa-linkedin" style="color: #0077b5;"></i></a>
+              <a href="https://www.pinterest.com/gulshandigitalzone"><i class="fa-brands fa-pinterest" style="color: #bd081c;"></i></a>
+              <a href="https://www.tiktok.com/@gulshandigitalzone"><i class="fa-brands fa-tiktok" style="color: #000000;"></i></a>
+              <a href="https://www.snapchat.com/gulshandigitalzone"><i class="fa-brands fa-snapchat" style="color: #fffc00;"></i></a>
+              <a href="https://www.reddit.com/user/gulshandigitalzone"><i class="fa-brands fa-reddit" style="color: #ff4500;"></i></a>
+              <a href="https://www.tumblr.com/gulshandigitalzone"><i class="fa-brands fa-tumblr" style="color: #36465d;"></i></a>
+              <a href="https://www.quora.com/profile/gulshandigitalzone"><i class="fa-brands fa-quora" style="color: #a82400;"></i></a>
+              <a href="https://www.youtube.com/@gulshandigitalzone"><i class="fa-brands fa-youtube" style="color: #ff0000;"></i></a>
+              <a href="https://www.whatsapp.com/gulshandigitalzone"><i class="fa-brands fa-whatsapp" style="color: #25D366;"></i></a>
+              <a href="https://www.vk.com/gulshandigitalzone"><i class="fa-brands fa-vk" style="color: #4c75a5;"></i></a>
+              <a href="https://www.flickr.com/photos/gulshandigitalzone"><i class="fa-brands fa-flickr" style="color: #ff0084;"></i></a>
+              <a href="https://www.tumblr.com/gulshandigitalzone"><i class="fa-brands fa-tumblr" style="color: #36465d;"></i></a>
+              <a href="https://www.dailymotion.com/gulshandigitalzone"><i class="fa-brands fa-dailymotion" style="color: #00a0d8;"></i></a>
+              <a href="https://www.blogger.com/gulshandigitalzone"><i class="fa-brands fa-blogger" style="color: #f57d00;"></i></a>
+              <a href="https://www.medium.com/@gulshandigitalzone"><i class="fa-brands fa-medium" style="color: #00ab6c;"></i></a>
+              <a href="https://www.tiktok.com/@gulshandigitalzone"><i class="fa-brands fa-tiktok" style="color: #000000;"></i></a>
+              <a href="https://www.patreon.com/gulshandigitalzone"><i class="fa-brands fa-patreon" style="color: #f96854;"></i></a>     
+</h5>
 
 </body>
 </html>
