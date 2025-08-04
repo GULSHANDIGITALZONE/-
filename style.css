@@ -1,5 +1,4 @@
-
-    body {
+body {
       font-family: Arial, sans-serif;
       margin: 0;
       background: #f3f3f3;
@@ -148,70 +147,33 @@
     display: grid;
     grid-template-rows: repeat(2,1fr);
     grid-template-columns: repeat(3,1fr);
-    size: 50px;
     grid-gap: 20px;
-
-    /* background-color: aqua; */
-    /* grid-gap: 10px; */
-
-}
-.item1 {
-    /* border: solid red;
-    background-color: rgb(255, 208, 0); */
-
-    /* grid-row-start: 1; 
-    grid-row-end: 3; or */
-    grid-row: 1/2;
-}
-.item2 {
-    /* border: solid red;
-    background-color: rgb(255, 208, 0); */
-    grid-row-start: 2;
-    grid-row-end: 3;
-
-}
-.item3{
-    /* border: solid red;
-    background-color: rgb(255, 208, 0); */
-    grid-row: 3/4;
-    /* order: 5; */
-
-}
-.item4 {
-    /* border: solid red;
-    background-color: rgb(255, 208, 0); */
-    grid-row: 1/2;
-
-}
-.item5 {
-    /* border: solid red;
-    background-color: rgb(255, 208, 0); */
-    grid-row: 2/3;
-    justify-self: start;
-
-}
-.item6 {
-    /* border: solid red;
-    background-color: rgb(255, 208, 0); */
-    grid-row: 3/4;
-    align-self: center;
-
-}
-.item7 {
-    /* border: solid red;
-    background-color: rgb(255, 208, 0); */
-    grid-row: 1/2;
-
 }
 
-
-.item9 {
-    /* border: solid red;
-    background-color: rgb(255, 208, 0); */
-    grid-row: 3/4;
-
+.item1, .item2, .item3, .item4, .item5, .item6, .item7, .item9 {
+    /* Remove unnecessary grid-row for better mobile support */
+    grid-row: auto;
+    grid-column: auto;
+    justify-self: stretch;
+    align-self: stretch;
 }
- /* About par click karne par model open ho jayeg....................... */
+
+/* Mobile responsive: stack items vertically */
+@media (max-width: 600px) {
+    .fruit {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-gap: 10px;
+    }
+    .item1, .item2, .item3, .item4, .item5, .item6, .item7, .item9 {
+        grid-row: auto;
+        grid-column: auto;
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+/* About par click karne par model open ho jayeg....................... */
     .modal {
         display: none;
         position: fixed;
