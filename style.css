@@ -102,6 +102,25 @@ body {
       text-decoration: none;
     }
 
+    .important-link-box {
+      background: #f7f7f7;
+      margin: 8px 0;
+      padding: 12px;
+      border-radius: 6px;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .important-link-box a {
+      color: #005cbf;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    .important-link-box a:hover {
+      text-decoration: underline;
+      color: #0073e6;
+    }
+
     /* Section boxes */
     .section {
       display: flex;
