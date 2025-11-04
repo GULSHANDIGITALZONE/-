@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ज्ञान की बाते </title>
+  <title>ज्ञान की बाते</title>
   <link rel="shortcut icon" href="./ज्ञान की बाते logo 1.png" type="image/x-icon">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
@@ -57,20 +57,53 @@
   </style>
 
   <script>
-    // जब पेज पूरा लोड हो जाएगा तब Loading स्क्रीन गायब हो जाएगी
+    // जब पेज पूरी तरह लोड हो जाए, तो overlay हटाओ
     window.addEventListener('load', function() {
       const overlay = document.getElementById('loading-overlay');
       overlay.style.opacity = '0';
       setTimeout(() => overlay.remove(), 400);
     });
+
+    // जब भी किसी लिंक पर क्लिक हो, तो Loading दिखाओ
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('a[href]').forEach(link => {
+        link.addEventListener('click', function(e) {
+          // अगर link नया टैब खोलता है या anchor (#) है तो ignore करो
+          const href = this.getAttribute('href');
+          if (!href || href.startsWith('#') || this.target === '_blank') return;
+
+          // Loading overlay बनाओ अगर हट चुका हो
+          if (!document.getElementById('loading-overlay')) {
+            const overlay = document.createElement('div');
+            overlay.id = 'loading-overlay';
+            overlay.innerHTML = `
+              <div class="loader-content">
+                <div class="spinner"></div>
+                <div class="loading-text">Loading...</div>
+              </div>`;
+            document.body.appendChild(overlay);
+          }
+
+          // छोटा delay दो ताकि effect smooth दिखे
+          setTimeout(() => {
+            const overlay = document.getElementById('loading-overlay');
+            overlay.style.opacity = '1';
+          }, 10);
+        });
+      });
+    });
   </script>
   <!-- 🌟 Loading Screen End -->
 
 
-  <!-- तुम्हारा असली पेज कंटेंट -->
   <a href="https://gulshandigitalzone.netlify.app/">
     <img style="width: 100px; height: 100px; position: fixed;" src="./ज्ञान की बाते logo 1.png" alt="">
   </a>
+
+
+  <!-- ✅ आखिर में तुम्हारा script.js शामिल रहना चाहिए -->
+  <script src="script.js"></script>
+
 
   <div class="header">
     <h1>ज्ञान की बाते </h1>
@@ -86,13 +119,8 @@
     <a href="https://bihar.s3waas.gov.in/">All Portal of Bihar District</a>
     <a href="https://gulshandigitalzone.github.io/GDZ/">Old Portal</a>
   </div>
-
-  <!-- बाकी सारा तुम्हारा वही पुराना कोड नीचे रहने दो -->
-  <!-- कुछ भी हटाने की जरूरत नहीं है -->
   
-  <!-- ... (पूरा तुम्हारा content जैसा है वैसा ही) ... -->
 
-  <script src="script.js"></script>
 
 
 <!-- Search Bar -->
