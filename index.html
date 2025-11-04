@@ -9,18 +9,76 @@
      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
      crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="style.css">
- 
 </head>
 <body>
-    <a href="https://gulshandigitalzone.netlify.app/"><img style="width: 100px; height: 100px; position: fixed;" src="./ज्ञान की बाते logo 1.png" alt=""></a>
+
+  <!-- 🌟 Loading Screen Start -->
+  <div id="loading-overlay">
+    <div class="loader-content">
+      <div class="spinner"></div>
+      <div class="loading-text">Loading...</div>
+    </div>
+  </div>
+
+  <style>
+    /* ===== Loading Overlay ===== */
+    #loading-overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      z-index: 9999;
+      transition: opacity 0.3s ease;
+    }
+    .loader-content {
+      text-align: center;
+      font-family: "Segoe UI", sans-serif;
+    }
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 6px solid rgba(0, 0, 0, 0.1);
+      border-top-color: #0073e6;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 12px;
+    }
+    .loading-text {
+      font-size: 18px;
+      color: #333;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+
+  <script>
+    // जब पेज पूरा लोड हो जाएगा तब Loading स्क्रीन गायब हो जाएगी
+    window.addEventListener('load', function() {
+      const overlay = document.getElementById('loading-overlay');
+      overlay.style.opacity = '0';
+      setTimeout(() => overlay.remove(), 400);
+    });
+  </script>
+  <!-- 🌟 Loading Screen End -->
+
+
+  <!-- तुम्हारा असली पेज कंटेंट -->
+  <a href="https://gulshandigitalzone.netlify.app/">
+    <img style="width: 100px; height: 100px; position: fixed;" src="./ज्ञान की बाते logo 1.png" alt="">
+  </a>
 
   <div class="header">
     <h1>ज्ञान की बाते </h1>
     <div class="sub-header">मस्‍ती के साथ</div>
   </div>
 
-    <div class="nav">
-      <a href="https://gulshandigitalzone.netlify.app/">Home</a>
+  <div class="nav">
+    <a href="https://gulshandigitalzone.netlify.app/">Home</a>
     <a href="https://gulshandigitalzone.github.io/TYPING/">Typing Test</a>
     <a href="https://github.com">Git Hub</a>
     <a href="https://fontawesome.com/">font Awesome</a>
@@ -28,6 +86,15 @@
     <a href="https://bihar.s3waas.gov.in/">All Portal of Bihar District</a>
     <a href="https://gulshandigitalzone.github.io/GDZ/">Old Portal</a>
   </div>
+
+  <!-- बाकी सारा तुम्हारा वही पुराना कोड नीचे रहने दो -->
+  <!-- कुछ भी हटाने की जरूरत नहीं है -->
+  
+  <!-- ... (पूरा तुम्हारा content जैसा है वैसा ही) ... -->
+
+  <script src="script.js"></script>
+
+
 <!-- Search Bar -->
 <div style="text-align: center; margin-top: 20px;">
   <input type="text" id="searchInput" placeholder="Search in Gyan Ki Bate..." style="padding: 10px; width: 60%; border-radius: 5px; border: 1px solid #ccc;" onkeydown="if(event.key==='Enter'){highlightText();}">
