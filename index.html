@@ -3,126 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ज्ञान की बाते</title>
+  <title>ज्ञान की बाते </title>
   <link rel="shortcut icon" href="./ज्ञान की बाते logo 1.png" type="image/x-icon">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
      crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="style.css">
+ 
 </head>
 <body>
-
-  <!-- 🌟 Loading Screen Start -->
-  <div id="loading-overlay">
-    <div class="loader-content">
-      <div class="spinner"></div>
-      <div class="loading-text">Loading...</div>
-    </div>
-  </div>
-
-  <style>
-    /* ===== Loading Overlay ===== */
-    #loading-overlay {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: white;
-      z-index: 9999;
-      transition: opacity 0.3s ease;
-    }
-    .loader-content {
-      text-align: center;
-      font-family: "Segoe UI", sans-serif;
-    }
-    .spinner {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 6px solid rgba(0, 0, 0, 0.1);
-      border-top-color: #0073e6;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 12px;
-    }
-    .loading-text {
-      font-size: 18px;
-      color: #333;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-  </style>
-
-  <script>
-    // जब पेज पूरी तरह लोड हो जाए, तो overlay हटाओ
-    window.addEventListener('load', function() {
-      const overlay = document.getElementById('loading-overlay');
-      overlay.style.opacity = '0';
-      setTimeout(() => overlay.remove(), 400);
-    });
-
-    // जब भी किसी लिंक पर क्लिक हो, तो Loading दिखाओ
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('a[href]').forEach(link => {
-        link.addEventListener('click', function(e) {
-          // अगर link नया टैब खोलता है या anchor (#) है तो ignore करो
-          const href = this.getAttribute('href');
-          if (!href || href.startsWith('#') || this.target === '_blank') return;
-
-          // Loading overlay बनाओ अगर हट चुका हो
-          if (!document.getElementById('loading-overlay')) {
-            const overlay = document.createElement('div');
-            overlay.id = 'loading-overlay';
-            overlay.innerHTML = `
-              <div class="loader-content">
-                <div class="spinner"></div>
-                <div class="loading-text">Loading...</div>
-              </div>`;
-            document.body.appendChild(overlay);
-          }
-
-          // छोटा delay दो ताकि effect smooth दिखे
-          setTimeout(() => {
-            const overlay = document.getElementById('loading-overlay');
-            overlay.style.opacity = '1';
-          }, 10);
-        });
-      });
-    });
-  </script>
-  <!-- 🌟 Loading Screen End -->
-
-
-  <a href="https://gulshandigitalzone.netlify.app/">
-    <img style="width: 100px; height: 100px; position: fixed;" src="./ज्ञान की बाते logo 1.png" alt="">
-  </a>
-
-
-  <!-- ✅ आखिर में तुम्हारा script.js शामिल रहना चाहिए -->
-  <script src="script.js"></script>
-
+    <a href="https://gulshandigitalzone.netlify.app/"><img style="width: 100px; height: 100px; position: fixed;" src="./ज्ञान की बाते logo 1.png" alt=""></a>
 
   <div class="header">
     <h1>ज्ञान की बाते </h1>
     <div class="sub-header">मस्‍ती के साथ</div>
   </div>
 
-  <div class="nav">
-    <a href="https://gulshandigitalzone.netlify.app/">Home</a>
+    <div class="nav">
+      <a href="https://gulshandigitalzone.netlify.app/">Home</a>
     <a href="https://gulshandigitalzone.github.io/TYPING/">Typing Test</a>
     <a href="https://github.com">Git Hub</a>
     <a href="https://fontawesome.com/">font Awesome</a>
     <a href="https://gyankibate6.blogspot.com/">Gyan Ki Bate Blog</a>
     <a href="https://bihar.s3waas.gov.in/">All Portal of Bihar District</a>
-    <a href="https://gulshandigitalzone.github.io/GDZ/">Old Portal</a>
+    <a href="https://gulshandigitalzone.github.io/GDZ/">My Old Portal</a>
   </div>
-  
-
-
-
 <!-- Search Bar -->
 <div style="text-align: center; margin-top: 20px;">
   <input type="text" id="searchInput" placeholder="Search in Gyan Ki Bate..." style="padding: 10px; width: 60%; border-radius: 5px; border: 1px solid #ccc;" onkeydown="if(event.key==='Enter'){highlightText();}">
@@ -273,9 +178,6 @@ function gotoNextHighlight() {
   <div class="section">
     <div class="box">
       <h2>IMPORTANT LINKS</h2>
-            <div class="important-link-box">
-                <a href="https://nrlm.gov.in/BlockWiseSHGMemebrsAction.do?methodName=showShgMembers&encd=0">Bihar Jeevika Member List</a>
-      </div>
       
       <div class="important-link-box">
                 <a href="https://onlineservices.proteantech.in/paam/endUserRegisterContact.html">NSDL PAN CARD Apply</a>
@@ -305,20 +207,43 @@ function gotoNextHighlight() {
   </div>
     <div class="box">
       <h2>LATEST UPDATE</h2>
+       <div class="important-link-box">
+  <a href="https://medhasoft.bihar.gov.in/">Matric Inter Graduation Pass SCHOLARSHIP</a>
+      </div>
       
       <div class="important-link-box">
-  <a href="https://www.biharjobportal.com/bihar-police-driver-constable-vacancy-2025">Comming soon</a>
+  <a href="https://www.biharjobportal.com/bihar-police-driver-constable-vacancy-2025">Bihar Police Driver Constable Vacancy 2025 – Apply Online</a>
       </div>
       <div class="important-link-box">
-  <a href="https://www.biharjobportal.com/bihar-anganwadi-supervisor-vacancy-2025">Comming soon</a>
+  <a href="https://www.biharjobportal.com/bihar-anganwadi-supervisor-vacancy-2025">Bihar Anganwadi Supervisor Vacancy 2025 – Apply Online</a>
       
   <div class="important-link-box">
-  <a href="https://www.biharjobportal.com/bihar-karyalay-jila-parishad-vacancy-2025">Comming soon</a>
+  <a href="https://www.biharjobportal.com/bihar-karyalay-jila-parishad-vacancy-2025">Bihar Karyalay Jila Parishad Vacancy 2025 – Apply</a>
       </div>
       <div class="important-link-box">
-        <a href="https://apply-csbc.com/CSBC_CT_V1_01_2025/applicationIndex">Comming soon</a>
+        <a href="https://apply-csbc.com/CSBC_CT_V1_01_2025/applicationIndex">CSBC Bihar Constable Apply Online</a>
       </div>
-    
+      <div class="important-link-box">
+        <a href="https://www.sarkariresult.com/force/army-agniveer-cee-mar25/">Army Agniveer 2025 Apply Online</a>
+      </div>
+      <div class="important-link-box">
+        <a href="https://www.rrbapply.gov.in/#/auth/home">RRB Group-D Apply</a>
+      </div>
+      <div class="important-link-box">
+        <a href="https://onlineupdatestm.in/kasturba-gandhi-vidyalaya-recruitment-2025/#google_vignette">कस्तूरबा गाँधी बालिका विद्यालय <br> में नई भर्ती जाने पूरी जानकारी?</a>
+      </div>
+      <div class="important-link-box">
+        <a href="https://agnipathvayu.cdac.in/avreg/candidate/login">Indian Air Force Agniveer</a>
+      </div>
+      <div class="important-link-box">
+        <a href="https://ssc.gov.in/login">Check Exam City & Date</a>
+      </div>
+      <div class="important-link-box">
+        <a href="https://onlineupdatestm.in/cbi-office-assistant-vacancy-2025/">सेंट्रल बैंक में आई नई <br> भर्ती 10वी पास के लिए</a>
+      </div>
+      <div class="important-link-box">
+        <a href="https://cdn3.digialm.com/EForms/configuredHtml/1631/84962/login.html">BIHAR BELTRON ANSWER KEY</a>
+      </div>
     </div>
     </div>
     <div class="box">
@@ -332,8 +257,10 @@ function gotoNextHighlight() {
       <div class="important-link-box">
         <a href="https://ofssbihar.net/Higher-Education/index.html">BSEB 11th CUT-OFF</a></div>   
            <div class="important-link-box">
-        <a href="#">Comming Soon</a></div>   
-   
+        <a href="https://rrb.digialm.com//EForms/configuredHtml/2667/95125/login.html">NTPC ADMIT CARD</a></div>   
+      <div class="important-link-box">
+        <a href="https://www.ssc.nic.in/Portal/Results">SSC CGL Tier 2 Result</a>
+      </div>
     </div>
 
  <div class="box" >
@@ -357,83 +284,17 @@ function gotoNextHighlight() {
   </div>
   </div>
 
-  <footer>
-                  <h1 style="color: #abf00a; text-align: center; background-color: #ff0000;">Any help</h1>
 
-       
-            <h1>
-                <div class="fruit" >
-                    <div class="item6"><a href="https://forms.gle/8rKVwfCvcWrBiQQN9">Cyber cafe Releted</a></div>
-                    <div class="item2"><a href="https://youtube.com/@gulshandigitalzone?si=YDIQ_hvKnwjShGRa"><i class="fa-brands fa-youtube"></i>youtube</a></div>
-                    <div class="item3">
-                        <form id="feedbackForm">
-                        <input style="background-color: #fbff00;" type="" id="inputField" name="inputField" placeholder="सुझाव या फीडबैक दें"" required>
-                        <button type="submit">Send</button>
-                    </form></div>
-                    <div class="item4"><a href="mailto:gulshankumardariyapur85885@gmail.com"><i class="fa-solid fa-envelope"></i>Email</a></div>
-                    <div class="item5"> 
-                        <form id="customForm">
-                        <input style="background-color: #fbff00;" type="email" id="Subscribe.Id" name="inputField" placeholder="Enter email" required>
-                        <button type="submit">Subscribe</button>
-                    </form>
-                </div>
-                    <div class="item1"><a href="tel:+6299050695"><i class="fa-sharp fa-solid fa-phone-volume"></i> <i class="fa-brands fa-whatsapp"></i>Call or What's app</a>
-                    </div>
-                    <div class="item7"><a href="https://www.google.com/maps/place/GULSHAN+DIGITAL+ZONE/@25.1608555,85.9283995,21z/data=!4m6!3m5!1s0x39f241d4005bf849:0xc81c1bd024015bb8!8m2!3d25.160834!4d85.928542!16s%2Fg%2F11w48v47kf?entry=ttu&g_ep=EgoyMDI0MTExMy4xIKXMDSoASAFQAw%3D%3D"><i class="fa-solid fa-location-dot"></i>Location</a></div>
-                    <div class="item8"><a href="#" onclick="showAbout()">About</a></div>
-                    <div class="item9"><a href="#" onclick="showAbout()">privacy-policy</a></div>
-                </div>
-            </h1>
-            <div id="aboutModal" class="modal">
-                <div class="modal-content">
-                    <span class="close" onclick="closeAbout()">&times; </span>
-                    <h1 style="text-align: center;">About Us</h1>
-                    <p>यह वेवसाट RS GULSHAN PRAJAPATI JI के द्वारा बनाया गया है । यह वेवसाइट सरकारी तो नही है लेकिन मानवता को देखते हुए बनाया गया है <br> 
-                        इस वेवसाइट का उद्देश्य लोगों को विभिन्न सरकारी सेवाओं और सूचनाओं तक आसान पहुंच प्रदान करना है।
-                         हम विभिन्न प्रकार की सेवाएं और जानकारी प्रदान करते हैं, जैसे कि नौकरी के आवेदन, महत्वपूर्ण लिंक, एडमिट कार्ड,
-                         और अन्य महत्वपूर्ण वेबसाइटों के लिंक। हमारा लक्ष्य है कि हम लोगों की मदद करें और उन्हें सही जानकारी और सेवाएं प्रदान करें। <a href="tel:+916299050695">Call: +916299050695</a>
-                         <a href="mailto:gulshandigitalzonq@gmail.com">Email: gulshandigitalzone@gmail.com</a>
-                     </p>                    
-                    <h1 style="text-align: center;">Privacy Policy</h1>
-                    <p>यह वेबसाइट किसी प्रकार का धोखा नहीं करती है। वेबसाइट की पहचान हमारे लोगो, कॉल, या ईमेल से पुष्टि करने के बाद ही भुगतान करें। 
-                        बिना जांचे भुगतान करने पर आपकी जिम्मेदारी होगी। हालांकि, नकली वेबसाइट होने पर आप मुझे कॉल या ईमेल कर सकते हैं।<br>
-                     हम आपकी गोपनीयता का सम्मान करते हैं और आपकी व्यक्तिगत जानकारी की सुरक्षा के लिए प्रतिबद्ध हैं। 
-                    हम आपकी जानकारी को किसी भी तीसरे पक्ष के साथ साझा नहीं करते हैं, सिवाय जब यह कानूनी रूप से आवश्यक हो। 
-                    हम आपकी जानकारी का उपयोग केवल आपके अनुभव को बेहतर बनाने और आपको बेहतर सेवाएं प्रदान करने के लिए करते हैं। 
-                    <br> कृपया ध्यान दें कि हमारी वेबसाइट का उपयोग करते समय, आप हमारी गोपनीयता नीति से सहमत होते हैं। 
-                    यदि आपके पास कोई प्रश्न या चिंताएं हैं, तो कृपया हमसे संपर्क करें।</p>
+  <footer id="footer">
+        <!-- ye vala add karne se kahi ka bhi link apne website me add kar sakte ho -->
+<script>
+  fetch("https://gulshandigitalzone.github.io/footer/")
+    .then(response => response.text())
+    .then(data => document.getElementById("footer").innerHTML = data)
+    .catch(err => console.error("Footer load error:", err));
+    </script>
 
-                </div>
-            </div>
-            <script src="script.js"></script>
-
-
-
+    </footer>
             
-        </footer>
-          
-          <h6 style="background-color: rgb(0, 0, 0);">.</h6>
-          <h2 style="text-align: center; color: red;">यहाँ से आप हमारे APP को डाउनलोड कर सकते हैं</h2>
-          <h3 style="text-align: center;"><a href="https://github.com/GULSHANDIGITALZONE/my-app/releases/download/v1.0.0/Gyan_Ki_Bate.apk">Click Here </a>OR  Scan QR Code</h3>
-           <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
-            <img style="width: 50%; height: 30vw; margin: 0%;" src="./girl image.png" alt="">
-          <img style="width: 30%; height: auto;" src="./Gyan_Ki_Bate_APK_QR.png" alt="">
-               </div>
-
-
-            <br><br>
-            <h6 style="background-color: rgb(0, 0, 0);">.</h6>
-
-            <h5 style="text-align: center; font-size: 20px;">&copy; 2025 GULSHAN DIGITAL ZONE   Devloped By:- RS GULSHAN PRAJAPATI <br>
-              <a href="https://x.com/RsGulshan/highlights"><i class="fa-brands fa-twitter" style="color: #0c69e4;"></i></a>
-              <a href="https://www.facebook.com/share/1GkaDNtGmX/"><i class="fa-brands fa-facebook" style="color: #3b5998;"></i></a>
-              <a href="https://www.instagram.com/rs_gulshan_prajapati/profilecard/?igsh=MXI3NzN2czJnNXVydg=="><i class="fa-brands fa-instagram" style="color: #e1306c;"></i></a>
-              <a href="https://www.linkedin.com/in/rs_gulshan_prajapati"><i class="fa-brands fa-linkedin" style="color: #0077b5;"></i></a>
-              <a href="https://www.snapchat.com/add/rsgulshan_parja?share_id=6syqgh95N_M&locale=en-IN"><i class="fa-brands fa-snapchat" style="color: #fffc00;"></i></a>
-              <a href="https://youtube.com/@gulshandigitalzone?si=YDIQ_hvKnwjShGRa"><i class="fa-brands fa-youtube" style="color: #ff0000;"></i></a>
-              <a href="https://chat.whatsapp.com/KFeFeRYVr73JMrtXXzpl4g?mode=ac_t"><i class="fa-brands fa-whatsapp" style="color: #25D366;"></i></a>
-              <a href="https://gyankibate6.blogspot.com/2025/08/blog-post.html"><i class="fa-brands fa-blogger" style="color: #f57d00;"></i></a>
-</h5>
-
 </body>
 </html>
