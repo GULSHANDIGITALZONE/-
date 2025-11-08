@@ -12,6 +12,62 @@
  
 </head>
 <body>
+
+ <!-- 🌟 Loading Screen Start -->
+  <div id="loading-overlay">
+    <div class="loader-content">
+      <div class="spinner"></div>
+      <div class="loading-text">Loading...</div>
+    </div>
+  </div>
+
+  <style>
+    /* ===== Loading Overlay ===== */
+    #loading-overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      z-index: 9999;
+      transition: opacity 0.3s ease;
+    }
+    .loader-content {
+      text-align: center;
+      font-family: "Segoe UI", sans-serif;
+    }
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 6px solid rgba(0, 0, 0, 0.1);
+      border-top-color: #0073e6;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 12px;
+    }
+    .loading-text {
+      font-size: 18px;
+      color: #333;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+
+  <script>
+    // जब पेज पूरा लोड हो जाएगा तब Loading स्क्रीन गायब हो जाएगी
+    window.addEventListener('load', function() {
+      const overlay = document.getElementById('loading-overlay');
+      overlay.style.opacity = '0';
+      setTimeout(() => overlay.remove(), 400);
+    });
+  </script>
+  <!-- 🌟 Loading Screen End -->
+
+  
     <a href="https://gulshandigitalzone.netlify.app/"><img style="width: 100px; height: 100px; position: fixed;" src="./ज्ञान की बाते logo 1.png" alt=""></a>
 
   <div class="header">
