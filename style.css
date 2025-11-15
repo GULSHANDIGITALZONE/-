@@ -32,7 +32,7 @@ body {
     .nav a {
       color: white;
       text-decoration: none;
-      padding: 12px 20px;
+      padding: 8px 12px; /* reduced spacing to make nav tighter */
       display: block;
     }
 
@@ -86,9 +86,9 @@ body {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 10px;
+      gap: 8px; /* slightly reduced gap */
       background: #005cbf;
-      padding: 15px;
+      padding: 12px; /* reduced padding */
     }
 
     .important-links a {
@@ -126,17 +126,17 @@ body {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      margin-top: 20px;
-      gap: 15px;
+      margin-top: 14px; /* reduced top margin */
+      gap: 10px; /* reduced gap between boxes */
     }
 
     .box {
       background: white;
       width: 30%;
-      min-width: 300px;
+      min-width: 260px; /* allow slightly narrower boxes on small screens */
       border-radius: 5px;
-      padding: 15px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 12px; /* reduced padding */
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
     }
 
     .box h2 {
