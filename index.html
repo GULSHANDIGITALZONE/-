@@ -9,9 +9,22 @@
      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
      crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="style.css">
- 
+  
+  <style>
+    /* Sticky nav styles */
+    .nav{ position: relative; transition: box-shadow .2s, background .2s; }
+    .nav.fixed{ position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 9999; box-shadow: 0 6px 18px rgba(0,0,0,0.12); background: rgba(121, 241, 161, 0.8); }
+    /* link colors when nav is fixed (avoid white-on-white) */
+    .nav.fixed a{ color: #111 !important; }
+    .nav.fixed a:hover{ background: rgba(0,0,0,0.06); }
+    #nav-spacer{ display: none; height: 0; }
+    @media (prefers-color-scheme: dark){ 
+      .nav.fixed{ background: rgba(8,10,12,0.92); }
+      .nav.fixed a{ color: #fff !important; }
+    }
+  </style>
 </head>
-<body>
+<body id="Home">
 
  <!-- 🌟 Loading Screen Start -->
   <style>
@@ -74,13 +87,14 @@
   </div>
 
     <div class="nav">
-      <a href="https://gulshandigitalzone.netlify.app/">Home</a>
-    <a href="https://gulshandigitalzone.github.io/TYPING/">Typing Test</a>
-    <a href="https://github.com">Git Hub</a>
-    <a href="https://fontawesome.com/">font Awesome</a>
+      <a href="#Home">Home</a>
+    <a href="#Latest_Update">Latest Update</a>
+    <a href="#IMPORTANT_LINK">Important Link</a>
+    <a href="#ADMIT-CARD">Admit Card</a>
     <a href="https://gyankibate6.blogspot.com/">Gyan Ki Bate Blog</a>
-    <a href="https://bihar.s3waas.gov.in/">All Portal of Bihar District</a>
-    <a href="https://gulshandigitalzone.github.io/GDZ/">My Old Portal</a>
+    <a href="https://gulshandigitalzone.github.io/GDZ/">Old Portal</a>
+    <a href="#footer">Support</a>
+
   </div>
 <!-- Search Bar -->
 <div style="text-align: center; margin-top: 20px;">
@@ -225,9 +239,12 @@ function gotoNextHighlight() {
   </div>
 
   <div class="section">
-    <div class="box">
+    <div id="IMPORTANT_LINK" class="box">
       <h2>IMPORTANT LINKS</h2>
       
+       <div class="important-link-box">
+    <a href="https://bihar.s3waas.gov.in/">All Portal of Bihar District</a>
+      </div>
       <div class="important-link-box">
                 <a href="./photoshop54.zip" download="Photoshop">Download Photoshop 7.0</a>
       </div>
@@ -258,7 +275,7 @@ function gotoNextHighlight() {
                 Photo Enhence   <a href="https://www.cutout.pro/photo-enhancer-sharpener-upscaler/upload">Link 1</a> , <a href="https://picsart.com/ai-image-enhancer/">Link 2</a>
     </div>
   </div>
-    <div class="box">
+    <div id="Latest_Update" class="box">
       <h2>LATEST UPDATE</h2>
        <div class="important-link-box">
   <a href="https://medhasoft.bihar.gov.in/">Matric Inter Graduation Pass SCHOLARSHIP</a>
@@ -299,7 +316,7 @@ function gotoNextHighlight() {
       </div>
     </div>
     </div>
-    <div class="box">
+    <div id="ADMIT-CARD" class="box">
    <h2>ADMIT CARD or RESULTS OR CUT OFF</h2>
         <div class="important-link-box">
         <a href="https://interbiharboard.com/">Bihar Board Class 12th Result</a>
@@ -354,6 +371,51 @@ function gotoNextHighlight() {
     </script>
 
     </footer>
-            
+       
+    
+    <script>
+      // Sticky nav: make .nav fixed when user scrolls past it
+      (function(){
+        const nav = document.querySelector('.nav');
+        if(!nav) return;
+
+        // Insert spacer to avoid layout jump
+        const spacer = document.createElement('div');
+        spacer.id = 'nav-spacer';
+        nav.parentNode.insertBefore(spacer, nav.nextSibling);
+
+        let navTop = nav.getBoundingClientRect().top + window.pageYOffset;
+
+        function checkSticky(){
+          // Recompute top when not fixed (to handle resizes or dynamic content)
+          if(!nav.classList.contains('fixed')){
+            navTop = nav.getBoundingClientRect().top + window.pageYOffset;
+          }
+          if(window.pageYOffset > navTop){
+            if(!nav.classList.contains('fixed')){
+              nav.classList.add('fixed');
+              spacer.style.display = 'block';
+              spacer.style.height = nav.offsetHeight + 'px';
+            }
+          } else {
+            if(nav.classList.contains('fixed')){
+              nav.classList.remove('fixed');
+              spacer.style.display = 'none';
+              spacer.style.height = '0';
+            }
+          }
+        }
+
+        window.addEventListener('scroll', checkSticky, {passive:true});
+        window.addEventListener('resize', ()=>{
+          if(nav.classList.contains('fixed')) spacer.style.height = nav.offsetHeight + 'px';
+          // recalc navTop on resize
+          navTop = nav.getBoundingClientRect().top + window.pageYOffset;
+          checkSticky();
+        });
+        // initial call
+        setTimeout(checkSticky, 60);
+      })();
+    </script>
 </body>
 </html>
