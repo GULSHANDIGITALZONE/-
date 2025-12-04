@@ -93,7 +93,7 @@
 </head>
 <body>
 <script>
-  fetch("./Header.html")
+  fetch("https://gulshandigitalzone.netlify.app/Header")
     .then(response => response.text())
     .then(data => document.getElementById("footer").innerHTML = data)
     .catch(err => console.error("Header load error:", err));
@@ -368,12 +368,13 @@
       item.classList.toggle('open');
     }
   </script>
+  
 <script>
-  fetch("footer.html")
+  fetch("https://gulshandigitalzone.netlify.app/footer")
     .then(response => response.text())
     .then(data => document.getElementById("footer").innerHTML = data)
     .catch(err => console.error("Footer load error:", err));
-    </script>
+   </script>
 
                <!-- <iframe src="https://gulshandigitalzone.netlify.app/footer" style="width:100%; height:100vh; border:0;" id="footerFrame"></iframe> -->
 
