@@ -92,12 +92,14 @@
   </style>
 </head>
 <body>
-<script>
+<!-- <script>
   fetch("https://gulshandigitalzone.netlify.app/header")
     .then(response => response.text())
     .then(data => document.getElementById("Header").innerHTML = data)
     .catch(err => console.error("Header load error:", err));
-    </script>
+    </script> -->
+  <div id="site-header"></div>
+
   
   <div class="wrap">
     <!-- HEADER -->
@@ -369,14 +371,42 @@
     }
   </script>
   
-<script>
+<!-- <script>
   fetch("https://gulshandigitalzone.netlify.app/footer")
     .then(response => response.text())
     .then(data => document.getElementById("footer").innerHTML = data)
     .catch(err => console.error("Footer load error:", err));
-   </script>
+   </script> -->
 
                <!-- <iframe src="https://gulshandigitalzone.netlify.app/footer" style="width:100%; height:100vh; border:0;" id="footerFrame"></iframe> -->
+<script>
+  async function loadFragment(url, targetId) {
+    try {
+      const res = await fetch(url, { mode: 'cors' });
+      if (!res.ok) throw new Error(`HTTP ${res.status} - ${res.statusText}`);
+      const html = await res.text();
+      const el = document.getElementById(targetId);
+      if (!el) throw new Error(`Target element #${targetId} not found`);
+      el.innerHTML = html;
+      console.log(`Loaded ${url} → #${targetId}`);
+    } catch (err) {
+      console.error(`Error loading ${url}:`, err);
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.innerHTML = `<div style="padding:12px; background:#fff4f4; color:#900; border:1px solid #f5c2c2;">
+          Error loading content. Check console (Ctrl+Shift+J).
+        </div>`;
+      }
+    }
+  }
+
+  // use correct paths — change if filenames अलग हैं
+  // अगर Header.html और footer.html same site पर हैं तो relative path बेहतर है
+  loadFragment('/Header.html', 'site-header');
+  loadFragment('/footer.html', 'site-footer');
+</script>
+  
+<div id="site-footer"></div>
 
 </body>
 </html>
