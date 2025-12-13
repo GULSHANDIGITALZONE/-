@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>About — Gulshan Kumar</title>
-  <meta name="description" content="Personal portfolio website of Gulshan Kumar. Clean, fast, mobile-friendly, and Netlify-ready." />
+  <title>About — RS GULSHAN PRAJAPATI</title>
+  <meta name="description" content="Personal portfolio website of RS GULSHAN PRAJAPATI. Clean, fast, mobile-friendly, and Netlify-ready." />
   <meta name="theme-color" content="#0d1117" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,14 +12,14 @@
   <link rel="shortcut icon" href="./IMG-20250423-WA0052.jpg" type="image/x-icon">
   <style>
     :root {
-      --bg: #0d1117;
-      --panel: #111827;
-      --soft: #1f2937;
-      --text: #e5e7eb;
-      --muted: #9ca3af;
+      --bg: #00ff2a;
+      --panel: #033ab1;
+      --soft: #004db9;
+      --text: #ffffff;
+      --muted: #ffffff;
       --brand: #22d3ee;
       --accent: #a78bfa;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
       --radius: 18px;
       --gap: 16px;
     }
@@ -38,7 +38,7 @@
     .logo-badge { width:36px; height:36px; border-radius:12px; background: linear-gradient(135deg, var(--brand), var(--accent)); display:grid; place-items:center; box-shadow: var(--shadow); font-weight:800; color:#0b1020; overflow:hidden; }
     .logo-badge img { width: 100%; height: 100%; object-fit: cover; display:block; }
     .nav a { opacity:.95; padding:8px 12px; border-radius:12px; font-weight:600; font-size:14px; }
-    .nav a:hover { background: rgba(255,255,255,.04); }
+    .nav a:hover { background: rgba(214, 170, 170, 0.04); }
     .menu { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
     .cta-btn { background: linear-gradient(135deg, var(--brand), var(--accent)); padding:10px 14px; border-radius:14px; color:#0b1020; font-weight:700; box-shadow: var(--shadow); }
 
@@ -190,8 +190,8 @@
   <header>
     <div class="container nav" role="banner">
       <div class="logo" aria-hidden="false">
-        <div class="logo-badge"><img class="logo-img" src="./IMG-20250423-WA0052.jpg" alt="Gulshan Kumar logo" width="36" height="36"></div>
-        <div>Gulshan Kumar</div>
+        <div class="logo-badge"><img class="logo-img" src="./IMG-20250423-WA0052.jpg" alt="RS GULSHAN PRAJAPATI logo" width="36" height="36"></div>
+        <div>RS GULSHAN PRAJAPATI</div>
       </div>
 
       <nav class="menu" role="navigation" aria-label="Main navigation">
@@ -208,7 +208,7 @@
     <section class="hero">
       <div class="container hero-wrap">
         <div>
-          <h1 class="title">Hi, I’m <span class="grad">Gulshan Kumar</span> — Developer & Blogger</h1>
+          <h1 class="title">Hi, I’m <span class="grad">RS GULSHAN PRAJAPATI</span> — Developer & Blogger</h1>
           <p class="subtitle">Lightning-fast personal website inspired by clean design, mobile-first, and deploys in seconds on Netlify.</p>
 
           <div class="hero-card">
@@ -227,8 +227,8 @@
         </div>
 
         <aside class="avatar-card" aria-label="Profile card">
-          <img src="./IMG-20250423-WA0052.jpg" alt="Gulshan Kumar" />
-          <div class="avatar-name">Gulshan Kumar</div>
+          <img src="./IMG-20250423-WA0052.jpg" alt="RS GULSHAN PRAJAPATI" />
+          <div class="avatar-name">RS GULSHAN PRAJAPATI</div>
           <div class="muted">Based in India • Available for work</div>
           <div class="socials" role="navigation" aria-label="Social links">
             <a href="https://github.com/dashboard" target="_blank" rel="noopener noreferrer">GitHub</a>
@@ -332,17 +332,17 @@
         <h2 class="section-title">Contact</h2>
         <div class="grid grid-2">
           <div class="card">
-            <form name="contact" method="POST" data-netlify="true" netlify>
-              <input type="hidden" name="form-name" value="contact" />
-              <label class="sr-only" for="name">Your Name</label>
-              <input required id="name" type="text" name="name" placeholder="Your Name" />
-              <label class="sr-only" for="email">Email Address</label>
-              <input required id="email" type="email" name="email" placeholder="Email Address" />
-              <label class="sr-only" for="message">Your Message</label>
-              <textarea id="message" name="message" placeholder="Your Message"></textarea>
-              <button class="btn primary" type="submit">Send Message</button>
+            <form name="contact" >
+              <!-- <button onclick="openFull()">⛶</button>
+              <script>
+                   function openFull() {
+                window.open("https://developercontect.netlify.app/", "_blank");
+                       }
+              </script> -->
+
+             <iframe width="100%" height="650px" src="https://developercontect.netlify.app/" frameborder="0"></iframe>
             </form>
-            <p class="muted mt-8">This form works out of the box on Netlify (no backend needed).</p>
+      
           </div>
 
           <div class="card">
@@ -360,17 +360,16 @@
     </section>
   </main>
 
+<!-- aria-label="Footer content" -->
 
-
-    <footer id="footer" >
     <!-- <script>
-      fetch("https://gulshandigitalzone.github.io/footer/")
+      fetch("https://gulshandigitalzone.netlify.app/footer")
         .then(response => response.text())
         .then(data => document.getElementById("footer").innerHTML = data)
         .catch(err => console.error("Footer load error:", err));
-    </script> -->
-    <iframe target="_blank" src="https://gulshandigitalzone.github.io/footer/" style="width:100%; height:100vh; border:0;" id="footerFrame"></iframe>
 
-</footer>
+    </script> -->
+             <iframe src="https://gulshandigitalzone.netlify.app/footer" style="width:100%; height:100vh; border:0;" id="footerFrame"></iframe>
+
 </body>
 </html>
