@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>SSC GD Quiz</title>
+	<style>
+		body{font-family:Arial, sans-serif; background:#f6f9fc; margin:0; padding:20px}
+		.wrap{max-width:720px;margin:18px auto;background:#fff;padding:20px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+		h1{text-align:center}
+		.question{font-size:1.1rem;margin:14px 0}
+		.choices button{display:block;width:100%;text-align:left;margin:8px 0;padding:10px;border-radius:6px;border:1px solid #e6e9ef;background:#fafafa;cursor:pointer}
+		.result{margin-top:12px;font-weight:bold}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<h1>SSC GD Practice Quiz</h1>
+		<div id="content">
+			<div class="question" id="qText"></div>
+			<div class="choices" id="choices"></div>
+			<div class="result" id="result"></div>
+			<div style="text-align:center;margin-top:12px"><button id="nextBtn">Start</button></div>
+		</div>
+	</div>
+
+	<script>
+		window.QUIZ = {
+			QUESTIONS:[
+				{q:'SSC GD के लिए सामान्यतः अधिकतम आयु सीमा (लगभग) कितनी होती है?', a:['16 वर्ष','23-25 वर्ष','50 वर्ष','12 वर्ष'], correct:1},
+				{q:'वर्तमान सेना प्रमुख कौन हैं? (अपडेट देखें)', a:['व्यक्ति A','व्यक्ति B','व्यक्ति C','ताज़ा जानकारी देखें'], correct:3},
+				{q:'1 किलोमीटर = ? मीटर', a:['100','1000','10,000','10000'], correct:1},
+				{q:'किस विटामिन का उत्पादन त्वचा में सूर्य के संपर्क से होता है?', a:['विटामिन A','विटामिन B','विटामिन D','विटामिन C'], correct:2},
+				{q:'बिहार की राजधानी क्या है?', a:['पटना','गया','मुजफ्फरपुर','पूर्णिया'], correct:0}
+			]
+		};
+	</script>
+	<script src="quiz.js"></script>
+</body>
+</html>

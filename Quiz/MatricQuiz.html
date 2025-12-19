@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Matric Quiz</title>
+	<style>
+		body{font-family:Arial, Helvetica, sans-serif; background:#f6f9fc; margin:0; padding:20px}
+		.wrap{max-width:720px;margin:18px auto;background:#fff;padding:20px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+		h1{text-align:center}
+		.question{font-size:1.1rem;margin:14px 0}
+		.choices button{display:block;width:100%;text-align:left;margin:8px 0;padding:10px;border-radius:6px;border:1px solid #e6e9ef;background:#fafafa;cursor:pointer}
+		.result{margin-top:12px;font-weight:bold}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<h1>Matric Level Quiz</h1>
+		<div id="content">
+			<div class="question" id="qText"></div>
+			<div class="choices" id="choices"></div>
+			<div class="result" id="result"></div>
+			<div style="text-align:center;margin-top:12px"><button id="nextBtn">Start</button></div>
+		</div>
+	</div>
+
+	<script>
+		window.QUIZ = {
+			QUESTIONS:[
+				{q:'2 + 2 = ?', a:['3','4','5','6'], correct:1},
+				{q:'16 का वर्गमूल क्या है?', a:['2','3','4','5'], correct:2},
+				{q:'5 × 6 = ?', a:['30','11','56','26'], correct:0},
+				{q:'10 ÷ 2 = ?', a:['2','4','5','6'], correct:2},
+				{q:'निम्न में से कौन अभाज्य संख्या है?', a:['4','6','9','7'], correct:3}
+			]
+		};
+	</script>
+	<script src="quiz.js"></script>
+</body>
+</html>
