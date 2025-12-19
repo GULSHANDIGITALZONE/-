@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Number Quiz</title>
+  <style>
+    body{font-family:Arial, sans-serif; background:#f6f9fc; margin:0; padding:20px}
+    .wrap{max-width:720px;margin:18px auto;background:#fff;padding:20px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+    h1{text-align:center}
+    .question{font-size:1.1rem;margin:14px 0}
+    .choices button{display:block;width:100%;text-align:left;margin:8px 0;padding:10px;border-radius:6px;border:1px solid #e6e9ef;background:#fafafa;cursor:pointer}
+    .result{margin-top:12px;font-weight:bold}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Number Knowledge Quiz</h1>
+    <div id="content">
+      <div class="question" id="qText"></div>
+      <div class="choices" id="choices"></div>
+      <div class="result" id="result"></div>
+      <div style="text-align:center;margin-top:12px"><button id="nextBtn">Start</button></div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const qText = document.getElementById('qText');
+      const choices = document.getElementById('choices');
+      const result = document.getElementById('result');
+      const nextBtn = document.getElementById('nextBtn');
+
+      const QUESTIONS = [
+        {q:'What is 7 × 8?', a:['54','56','49','63'], correct:1},
+        {q:'Which number is prime?', a:['21','29','35','39'], correct:1},
+        {q:'What is 12 ÷ 3?', a:['4','6','3','9'], correct:0},
+        {q:'Sum of angles in a triangle (degrees)?', a:['180','90','360','270'], correct:0},
+        {q:'What is 15% of 200?', a:['20','25','30','35'], correct:2}
+        
+      ];
+
+      let idx = 0, score = 0, started = false;
+
+      function renderQuestion(i){
+        const item = QUESTIONS[i];
+        qText.textContent = `Q${i+1}. ${item.q}`;
+        choices.innerHTML = '';
+        item.a.forEach((opt, j)=>{
+          const b = document.createElement('button');
+          b.textContent = opt;
+          b.addEventListener('click', ()=> selectAnswer(j));
+          choices.appendChild(b);
+        });
+        result.textContent = '';
+      }
+
+      function selectAnswer(choice){
+        const correct = QUESTIONS[idx].correct;
+        if (choice === correct){ score+=10; result.textContent = 'Correct! +10'; result.style.color='green'; }
+        else { result.textContent = 'Wrong. Correct: ' + QUESTIONS[idx].a[correct]; result.style.color='red'; }
+        // disable buttons
+        Array.from(choices.children).forEach(b=>b.disabled=true);
+        nextBtn.textContent = (idx < QUESTIONS.length-1) ? 'Next' : 'Finish';
+      }
+
+      nextBtn.addEventListener('click', ()=>{
+        if (!started){ started = true; idx=0; score=0; nextBtn.textContent='Next'; renderQuestion(idx); return; }
+        if (Array.from(choices.children).every(b=>b.disabled)){ // already answered -> next
+          idx++;
+          if (idx >= QUESTIONS.length){
+            qText.textContent = 'Quiz Complete!';
+            choices.innerHTML = '';
+            result.textContent = 'Your score: ' + score + ' / ' + (QUESTIONS.length*10);
+            nextBtn.textContent = 'Restart';
+            started = false;
+          } else {
+            renderQuestion(idx);
+          }
+        } else { // not answered yet
+          result.textContent = 'Please select an answer';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

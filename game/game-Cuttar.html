@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fruits Cutter</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#fafafa; margin:0; padding:20px; }
+    h1 { text-align:center; }
+    .play-area { width:100%; max-width:900px; height:520px; margin: 12px auto; background:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.08); position:relative; overflow:hidden; }
+    .fruit { position:absolute; font-size:34px; cursor:pointer; user-select:none; }
+    .hud { text-align:center; margin-top:10px; }
+    button { padding:8px 12px; }
+  </style>
+</head>
+<body>
+  <h1>Fruits Cutter</h1>
+  <div class="play-area" id="area"></div>
+  <div class="hud">
+    <span>Score: <strong id="score">0</strong></span>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+  </div>
+
+  <script>
+    (function(){
+      const area = document.getElementById('area');
+      const scoreEl = document.getElementById('score');
+      const startBtn = document.getElementById('start');
+      const stopBtn = document.getElementById('stop');
+
+      const FRUITS = ['🍎','🍊','🍌','🍇','🍉','🍓','🥝','🍍'];
+      let score = 0;
+      let running = false;
+      let spawnInterval;
+      let gravityRef = [];
+
+      function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min}
+
+      function spawn(){
+        const f = document.createElement('div');
+        f.className = 'fruit';
+        f.textContent = FRUITS[rand(0,FRUITS.length-1)];
+        const x = rand(20, area.clientWidth - 60);
+        f.style.left = x + 'px';
+        f.style.top = '-40px';
+        area.appendChild(f);
+
+        // animate falling via interval
+        let vy = rand(1,3);
+        const id = setInterval(()=>{
+          const top = parseFloat(f.style.top || '-40px');
+          f.style.top = (top + vy) + 'px';
+          vy += 0.12; // gravity
+          if (top > area.clientHeight - 20) {
+            // missed
+            clearInterval(id);
+            gravityRef = gravityRef.filter(i=>i!==id);
+            if (f.parentNode) f.remove();
+          }
+        }, 30);
+        gravityRef.push(id);
+
+        f.addEventListener('click', ()=>{
+          score += 10;
+          scoreEl.textContent = score;
+          // pop animation
+          f.style.transform = 'scale(1.4)';
+          setTimeout(()=>{ if(f.parentNode) f.remove() },120);
+          clearInterval(id);
+          gravityRef = gravityRef.filter(i=>i!==id);
+        });
+
+        // auto-remove after 8s
+        setTimeout(()=>{ if(f.parentNode) f.remove(); }, 8000);
+      }
+
+      startBtn.addEventListener('click', ()=>{
+        if (running) return;
+        running = true; score = 0; scoreEl.textContent = score;
+        spawnInterval = setInterval(spawn, 700);
+      });
+      stopBtn.addEventListener('click', ()=>{
+        running = false;
+        clearInterval(spawnInterval);
+        gravityRef.forEach(id=>clearInterval(id)); gravityRef = [];
+        // clear remaining
+        area.querySelectorAll('.fruit').forEach(n=>n.remove());
+      });
+
+      // allow clicking area to slice too (optional)
+      area.addEventListener('click', (e)=>{
+        // do nothing, fruit clicks handle scoring
+      });
+
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Highway Dash</title>
+    <style>
+        :root{--bg:#0b1220;--road:#333;--lane:#fff}
+        *{box-sizing:border-box}
+        body{margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;background:linear-gradient(180deg,#071020 0,#0f1a2b 60%);color:#fff}
+        header{padding:18px 12px;text-align:center}
+        header h1{margin:0;font-size:1.4rem;letter-spacing:0.6px}
+        .game-wrap{max-width:920px;margin:18px auto;padding:12px}
+
+        .hud{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+        .score{font-weight:700}
+        .controls{display:flex;gap:8px}
+        .btn{background:#ff6b6b;border:0;padding:8px 12px;border-radius:8px;color:#fff;cursor:pointer}
+
+        .arena{position:relative;height:520px;background:linear-gradient(#4a4a4a,#2b2b2b);border-radius:12px;overflow:hidden;margin:0 auto;box-shadow:0 10px 40px rgba(0,0,0,0.6)}
+        /* road lanes effect */
+        .road{position:absolute;inset:0;left:50%;transform:translateX(-50%);width:58%;background:repeating-linear-gradient(transparent 0 60px, rgba(255,255,255,0.02) 61px);}
+        .lane-mark{position:absolute;left:50%;transform:translateX(-50%);width:6px;height:100%;background:repeating-linear-gradient(transparent 0 28px, var(--lane) 29px);opacity:0.85}
+
+        /* player car */
+        .player{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);width:56px;height:96px;background:linear-gradient(180deg,#ff6b6b,#d33);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;box-shadow:0 10px 30px rgba(0,0,0,0.6)}
+
+        /* obstacle style */
+        .ob{position:absolute;width:56px;height:96px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff}
+
+        .lane-x{position:absolute;top:0;bottom:0}
+
+        .touch-controls{display:none;position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:12px}
+        .touch-controls .btn{padding:14px 20px;border-radius:999px}
+
+        /* responsive */
+        @media (max-width:640px){
+            .arena{height:420px}
+            .touch-controls{display:flex}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Highway Dash</h1>
+    </header>
+
+    <main class="game-wrap">
+        <div class="hud">
+            <div class="score">Score: <span id="score">0</span> &nbsp; • &nbsp; Best: <span id="best">0</span></div>
+            <div class="controls">
+                <button id="startBtn" class="btn">Start</button>
+                <button id="pauseBtn" class="btn">Pause</button>
+                <button id="resetBtn" class="btn">Reset</button>
+            </div>
+        </div>
+
+        <div class="arena" id="arena">
+            <div class="road" id="road"></div>
+            <div class="lane-x" id="laneWrap"></div>
+            <div class="player" id="player">🚗</div>
+            <div class="touch-controls" id="touch">
+                <button id="leftTouch" class="btn">◀</button>
+                <button id="rightTouch" class="btn">▶</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        (function(){
+            const arena = document.getElementById('arena');
+            const player = document.getElementById('player');
+            const laneWrap = document.getElementById('laneWrap');
+            const startBtn = document.getElementById('startBtn');
+            const pauseBtn = document.getElementById('pauseBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const scoreEl = document.getElementById('score');
+            const bestEl = document.getElementById('best');
+
+            const LANES = 3;
+            let lanePositions = [];
+            let curLane = 1; // 0..LANES-1
+
+            let obstacles = [];
+            let running = false, paused=false;
+            let lastSpawn = 0, spawnInterval = 1100;
+            let speed = 1.4; // base speed multiplier
+            let score = 0;
+
+            // init
+            function setup(){
+                const road = document.getElementById('road');
+                // create lanes
+                laneWrap.innerHTML = '';
+                const roadWidth = Math.round(arena.clientWidth * 0.58);
+                road.style.width = roadWidth + 'px';
+                road.style.left = '50%';
+                road.style.transform = 'translateX(-50%)';
+
+                lanePositions = [];
+                for(let i=0;i<LANES;i++){
+                    const laneW = roadWidth / LANES;
+                    const x = (arena.clientWidth - roadWidth)/2 + i*laneW + (laneW-laneW*0.5)/2 + laneW*0.0;
+                    lanePositions.push(x + (laneW*0.25));
+                }
+                // position player
+                moveToLane(curLane,true);
+                // save best
+                const best = localStorage.getItem('highway_best')||0; bestEl.textContent = best;
+            }
+
+            function moveToLane(l,instant){
+                curLane = Math.max(0, Math.min(LANES-1, l));
+                const x = lanePositions[curLane] - player.offsetWidth/2;
+                if (instant) player.style.left = x + 'px'; else player.style.transition='left 0.18s ease', player.style.left = x + 'px';
+                setTimeout(()=>player.style.transition='',200);
+            }
+
+            function spawnObstacle(){
+                const ob = document.createElement('div'); ob.className='ob';
+                ob.style.width = player.offsetWidth + 'px'; ob.style.height = player.offsetHeight + 'px';
+                const lane = Math.floor(Math.random()*LANES);
+                ob.dataset.lane = lane;
+                ob.style.left = (lanePositions[lane] - player.offsetWidth/2) + 'px';
+                ob.style.top = '-120px';
+                // random color
+                ob.style.background = ['#4c9aff','#ff6b6b','#ffd166','#7bd389'][Math.floor(Math.random()*4)];
+                ob.textContent = '🚙';
+                arena.appendChild(ob);
+                obstacles.push({el:ob,y:-120,lane,vy:1.2 + Math.random()*0.8});
+            }
+
+            function update(delta){
+                if (!running || paused) return;
+                // spawn
+                lastSpawn += delta;
+                if (lastSpawn > spawnInterval){ spawnObstacle(); lastSpawn=0; spawnInterval = 900 - Math.min(600, Math.floor(score/50)); }
+                // move obstacles
+                for(let i=obstacles.length-1;i>=0;i--){
+                    const o = obstacles[i];
+                    o.y += o.vy * (1 + speed*0.08) * (delta/16);
+                    o.el.style.top = o.y + 'px';
+                    // off-screen
+                    if (o.y > arena.clientHeight + 120){ o.el.remove(); obstacles.splice(i,1); score += 5; scoreEl.textContent = score; continue; }
+                    // collision
+                    const pr = player.getBoundingClientRect();
+                    const or = o.el.getBoundingClientRect();
+                    if (!(pr.right < or.left || pr.left > or.right || pr.bottom < or.top || pr.top > or.bottom)){
+                        // collision
+                        endGame(); return;
+                    }
+                }
+                // increase difficulty
+                speed += 0.0006 * delta;
+                score += 0.02 * (delta/16);
+                scoreEl.textContent = Math.floor(score);
+            }
+
+            let lastTime=0;
+            function loop(t){
+                if (!lastTime) lastTime=t; const delta = t-lastTime; lastTime=t; update(delta);
+                if (running) requestAnimationFrame(loop); }
+
+            function startGame(){ if (running) return; running=true; paused=false; lastTime=0; obstacles.forEach(o=>o.el.remove()); obstacles=[]; score=0; scoreEl.textContent=0; speed=1.4; lastSpawn=0; spawnInterval=1100; requestAnimationFrame(loop); }
+            function pauseGame(){ paused = !paused; }
+            function resetGame(){ running=false; paused=false; obstacles.forEach(o=>o.el.remove()); obstacles=[]; score=0; scoreEl.textContent=0; const best = localStorage.getItem('highway_best')||0; bestEl.textContent = best; moveToLane(1,true); }
+            function endGame(){ running=false; paused=false; const sc = Math.floor(score); const best = Math.max(sc, Number(localStorage.getItem('highway_best')||0)); localStorage.setItem('highway_best', best); bestEl.textContent = best; alert('Game Over! Your score: '+ sc); }
+
+            // controls
+            document.addEventListener('keydown',(e)=>{
+                if (!running) return;
+                if (e.key === 'ArrowLeft' || e.key.toLowerCase()==='a') moveToLane(curLane-1);
+                if (e.key === 'ArrowRight' || e.key.toLowerCase()==='d') moveToLane(curLane+1);
+            });
+
+            // touch buttons
+            document.getElementById('leftTouch').addEventListener('touchstart', (e)=>{ e.preventDefault(); moveToLane(curLane-1); });
+            document.getElementById('rightTouch').addEventListener('touchstart', (e)=>{ e.preventDefault(); moveToLane(curLane+1); });
+
+            startBtn.addEventListener('click', ()=>{ startGame(); });
+            pauseBtn.addEventListener('click', ()=>{ pauseGame(); });
+            resetBtn.addEventListener('click', ()=>{ resetGame(); });
+
+            // allow clicking arena to move (tap left/right)
+            arena.addEventListener('click',(e)=>{
+                const rect = arena.getBoundingClientRect(); const cx = e.clientX - rect.left;
+                const laneMid = lanePositions[curLane];
+                if (cx < laneMid) moveToLane(curLane-1); else moveToLane(curLane+1);
+            });
+
+            // responsive setup
+            window.addEventListener('resize', setup);
+            setup();
+
+        })();
+    </script>
+</body>
+</html>
