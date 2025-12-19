@@ -1,99 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fruits Cutter</title>
-  <style>
-    body { font-family: Arial, sans-serif; background:#fafafa; margin:0; padding:20px; }
-    h1 { text-align:center; }
-    .play-area { width:100%; max-width:900px; height:520px; margin: 12px auto; background:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.08); position:relative; overflow:hidden; }
-    .fruit { position:absolute; font-size:34px; cursor:pointer; user-select:none; }
-    .hud { text-align:center; margin-top:10px; }
-    button { padding:8px 12px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fruits Cutter GDZ</title>
+
+<style>
+body{
+  margin:0;
+  padding:15px;
+  background:#f1f1f1;
+  font-family:Arial, sans-serif;
+}
+h1{text-align:center}
+
+.play-area{
+  max-width:900px;
+  height:520px;
+  margin:auto;
+  background:#fff;
+  border-radius:10px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  cursor:crosshair;
+}
+
+.fruit{
+  position:absolute;
+  font-size:42px;
+  user-select:none;
+}
+
+.bomb{
+  font-size:40px;
+}
+
+.hud{
+  text-align:center;
+  margin-top:10px;
+  font-size:18px;
+}
+
+.slice-line{
+  position:absolute;
+  height:3px;
+  background:red;
+  transform-origin:left center;
+  pointer-events:none;
+}
+button{
+  padding:8px 14px;
+  margin-left:6px;
+}
+</style>
 </head>
+
 <body>
-  <h1>Fruits Cutter</h1>
-  <div class="play-area" id="area"></div>
-  <div class="hud">
-    <span>Score: <strong id="score">0</strong></span>
-    <button id="start">Start</button>
-    <button id="stop">Stop</button>
-  </div>
 
-  <script>
-    (function(){
-      const area = document.getElementById('area');
-      const scoreEl = document.getElementById('score');
-      const startBtn = document.getElementById('start');
-      const stopBtn = document.getElementById('stop');
+<h1>🍉 Fruits Cutter GDZ</h1>
 
-      const FRUITS = ['🍎','🍊','🍌','🍇','🍉','🍓','🥝','🍍'];
-      let score = 0;
-      let running = false;
-      let spawnInterval;
-      let gravityRef = [];
+<div class="play-area" id="area"></div>
 
-      function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min}
+<div class="hud">
+  Score: <b id="score">0</b> |
+  Level: <b id="level">1</b> |
+  Time: <b id="time">30</b>s
+  <br><br>
+  <button id="start">Start</button>
+  <button id="stop">Stop</button>
+</div>
 
-      function spawn(){
-        const f = document.createElement('div');
-        f.className = 'fruit';
-        f.textContent = FRUITS[rand(0,FRUITS.length-1)];
-        const x = rand(20, area.clientWidth - 60);
-        f.style.left = x + 'px';
-        f.style.top = '-40px';
-        area.appendChild(f);
+<script>
+const area = document.getElementById("area");
+const scoreEl = document.getElementById("score");
+const levelEl = document.getElementById("level");
+const timeEl  = document.getElementById("time");
+const startBtn = document.getElementById("start");
+const stopBtn  = document.getElementById("stop");
 
-        // animate falling via interval
-        let vy = rand(1,3);
-        const id = setInterval(()=>{
-          const top = parseFloat(f.style.top || '-40px');
-          f.style.top = (top + vy) + 'px';
-          vy += 0.12; // gravity
-          if (top > area.clientHeight - 20) {
-            // missed
-            clearInterval(id);
-            gravityRef = gravityRef.filter(i=>i!==id);
-            if (f.parentNode) f.remove();
-          }
-        }, 30);
-        gravityRef.push(id);
+const FRUITS = ['🍎','🍊','🍌','🍇','🍉','🍓','🥝','🍍'];
+const BOMB = '💣';
 
-        f.addEventListener('click', ()=>{
-          score += 10;
-          scoreEl.textContent = score;
-          // pop animation
-          f.style.transform = 'scale(1.4)';
-          setTimeout(()=>{ if(f.parentNode) f.remove() },120);
-          clearInterval(id);
-          gravityRef = gravityRef.filter(i=>i!==id);
-        });
+let fruits=[];
+let score=0;
+let level=1;
+let timeLeft=30;
+let running=false;
+let spawnTimer, gameTimer;
+let slicing=false;
+let lastX=0,lastY=0;
 
-        // auto-remove after 8s
-        setTimeout(()=>{ if(f.parentNode) f.remove(); }, 8000);
+/* ---- SOUND (PURE JS) ---- */
+const ctx=new (window.AudioContext||window.webkitAudioContext)();
+function beep(freq,dur){
+  const o=ctx.createOscillator();
+  const g=ctx.createGain();
+  o.frequency.value=freq;
+  o.connect(g); g.connect(ctx.destination);
+  o.start();
+  g.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+dur);
+  o.stop(ctx.currentTime+dur);
+}
+
+/* ---- RANDOM ---- */
+function rand(min,max){return Math.random()*(max-min)+min}
+
+/* ---- SPAWN ---- */
+function spawn(){
+  const el=document.createElement("div");
+  const isBomb=Math.random()<0.15;
+  el.className="fruit"+(isBomb?" bomb":"");
+  el.textContent=isBomb?BOMB:FRUITS[Math.floor(Math.random()*FRUITS.length)];
+
+  const f={
+    el,
+    isBomb,
+    x:rand(40,area.clientWidth-40),
+    y:area.clientHeight+40,
+    vx:rand(-1.5,1.5),
+    vy:rand(-12-level*1.5,-16-level*1.5),
+    cut:false
+  };
+  el.style.left=f.x+"px";
+  el.style.top=f.y+"px";
+  area.appendChild(el);
+  fruits.push(f);
+}
+
+/* ---- GAME LOOP ---- */
+function update(){
+  if(!running) return;
+  fruits.forEach((f,i)=>{
+    f.vy+=0.35;
+    f.x+=f.vx;
+    f.y+=f.vy;
+    f.el.style.left=f.x+"px";
+    f.el.style.top=f.y+"px";
+    if(f.y>area.clientHeight+60){
+      f.el.remove();
+      fruits.splice(i,1);
+    }
+  });
+  requestAnimationFrame(update);
+}
+
+/* ---- CUT CHECK ---- */
+function cutCheck(x,y){
+  fruits.forEach((f,i)=>{
+    if(f.cut) return;
+    const r=f.el.getBoundingClientRect();
+    const a=area.getBoundingClientRect();
+    const fx=r.left-a.left+r.width/2;
+    const fy=r.top-a.top+r.height/2;
+    if(Math.hypot(fx-x,fy-y)<30){
+      f.cut=true;
+      if(f.isBomb){
+        beep(80,0.6);
+        alert("💥 GAME OVER");
+        stopGame();
+        return;
       }
+      beep(600,0.08);
+      score+=10;
+      scoreEl.textContent=score;
 
-      startBtn.addEventListener('click', ()=>{
-        if (running) return;
-        running = true; score = 0; scoreEl.textContent = score;
-        spawnInterval = setInterval(spawn, 700);
-      });
-      stopBtn.addEventListener('click', ()=>{
-        running = false;
-        clearInterval(spawnInterval);
-        gravityRef.forEach(id=>clearInterval(id)); gravityRef = [];
-        // clear remaining
-        area.querySelectorAll('.fruit').forEach(n=>n.remove());
-      });
+      // 2 PIECE EFFECT
+      f.el.style.transform="scale(1.4) rotate(-20deg)";
+      setTimeout(()=>f.el.remove(),120);
+      fruits.splice(i,1);
+    }
+  });
+}
 
-      // allow clicking area to slice too (optional)
-      area.addEventListener('click', (e)=>{
-        // do nothing, fruit clicks handle scoring
-      });
+/* ---- SLICE LINE ---- */
+function drawSlice(x1,y1,x2,y2){
+  const l=document.createElement("div");
+  l.className="slice-line";
+  const len=Math.hypot(x2-x1,y2-y1);
+  const ang=Math.atan2(y2-y1,x2-x1)*180/Math.PI;
+  l.style.width=len+"px";
+  l.style.left=x1+"px";
+  l.style.top=y1+"px";
+  l.style.transform=`rotate(${ang}deg)`;
+  area.appendChild(l);
+  setTimeout(()=>l.remove(),80);
+}
 
-    })();
-  </script>
+/* ---- INPUT ---- */
+area.onmousedown=e=>{slicing=true;lastX=e.offsetX;lastY=e.offsetY;}
+area.onmousemove=e=>{
+  if(!slicing) return;
+  drawSlice(lastX,lastY,e.offsetX,e.offsetY);
+  cutCheck(e.offsetX,e.offsetY);
+  lastX=e.offsetX;lastY=e.offsetY;
+}
+window.onmouseup=()=>slicing=false;
+
+/* ---- TOUCH ---- */
+area.addEventListener("touchstart",e=>{
+  slicing=true;
+  const t=e.touches[0];
+  lastX=t.clientX-area.offsetLeft;
+  lastY=t.clientY-area.offsetTop;
+});
+area.addEventListener("touchmove",e=>{
+  if(!slicing) return;
+  const t=e.touches[0];
+  const x=t.clientX-area.offsetLeft;
+  const y=t.clientY-area.offsetTop;
+  drawSlice(lastX,lastY,x,y);
+  cutCheck(x,y);
+  lastX=x;lastY=y;
+});
+area.addEventListener("touchend",()=>slicing=false);
+
+/* ---- TIMER & LEVEL ---- */
+function startTimer(){
+  gameTimer=setInterval(()=>{
+    timeLeft--;
+    timeEl.textContent=timeLeft;
+    if(timeLeft<=0){
+      level++;
+      levelEl.textContent=level;
+      timeLeft=30;
+      clearInterval(spawnTimer);
+      spawnTimer=setInterval(spawn,Math.max(300,700-level*60));
+    }
+  },1000);
+}
+
+/* ---- CONTROLS ---- */
+function startGame(){
+  if(running) return;
+  running=true;
+  score=0;level=1;timeLeft=30;
+  scoreEl.textContent=score;
+  levelEl.textContent=level;
+  timeEl.textContent=timeLeft;
+  fruits.forEach(f=>f.el.remove());
+  fruits=[];
+  spawnTimer=setInterval(spawn,700);
+  startTimer();
+  update();
+}
+function stopGame(){
+  running=false;
+  clearInterval(spawnTimer);
+  clearInterval(gameTimer);
+  fruits.forEach(f=>f.el.remove());
+  fruits=[];
+}
+
+startBtn.onclick=startGame;
+stopBtn.onclick=stopGame;
+</script>
+
 </body>
 </html>
