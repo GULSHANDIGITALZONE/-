@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Auto Background Remover</title>
+<title>GDZ Background Remover</title>
 
 <style>
 body{
@@ -11,7 +11,7 @@ body{
   text-align:center;
   padding:40px;
 }
-.container{
+.box{
   background:#fff;
   padding:30px;
   max-width:420px;
@@ -19,86 +19,103 @@ body{
   border-radius:10px;
   box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
-input, button{
+input,button{
   width:100%;
   padding:12px;
   margin-top:10px;
 }
 button{
-  background:#0d6efd;
-  color:#fff;
   border:none;
   cursor:pointer;
   font-size:16px;
 }
-button:hover{
-  background:#0b5ed7;
+#removeBtn{
+  background:#0d6efd;
+  color:#fff;
+}
+#downloadBtn{
+  background:#198754;
+  color:#fff;
+  display:none;
 }
 img{
   max-width:100%;
   margin-top:20px;
 }
-#downloadBtn{
-  display:none;
-  background:#198754;
-}
-.loader{
+#loader{
   display:none;
   margin-top:15px;
+}
+#error{
+  color:red;
+  margin-top:10px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="box">
   <h2>Auto Background Remover</h2>
 
   <input type="file" id="fileInput" accept="image/*">
-  <button onclick="removeBg()">Remove Background</button>
+  <button id="removeBtn">Remove Background</button>
 
-  <div class="loader" id="loader">⏳ Processing...</div>
+  <div id="loader">⏳ Processing...</div>
+  <div id="error"></div>
 
   <img id="resultImg">
   <button id="downloadBtn">Download Image</button>
 </div>
 
 <script>
+const BACKEND_URL =
+  "https://bg-remover-backend-1-2s39.onrender.com"; // 🔴 change this
+
 let finalBlob = null;
 
-// 🔴 CHANGE THIS TO YOUR RENDER BACKEND URL
-const BACKEND_URL = "https://bg-remover-backend-1-2s39.onrender.com";
-
-function removeBg(){
+document.getElementById("removeBtn").onclick = () => {
   const file = document.getElementById("fileInput").files[0];
-  if(!file){
+  document.getElementById("error").innerText = "";
+
+  if (!file) {
     alert("Image select karo");
     return;
   }
 
-  document.getElementById("loader").style.display = "block";
-
   const formData = new FormData();
   formData.append("image", file);
 
-  fetch(BACKEND_URL,{
-    method:"POST",
-    body:formData
+  document.getElementById("loader").style.display = "block";
+  document.getElementById("downloadBtn").style.display = "none";
+
+  fetch(BACKEND_URL, {
+    method: "POST",
+    body: formData
   })
-  .then(res => res.blob())
+  .then(res => {
+    if (!res.ok) {
+      return res.json().then(e => { throw e; });
+    }
+    return res.blob();
+  })
   .then(blob => {
     finalBlob = blob;
-    document.getElementById("resultImg").src = URL.createObjectURL(blob);
+    document.getElementById("resultImg").src =
+      URL.createObjectURL(blob);
     document.getElementById("downloadBtn").style.display = "block";
-    document.getElementById("loader").style.display = "none";
   })
-  .catch(err=>{
-    alert("Error occurred");
+  .catch(err => {
+    document.getElementById("error").innerText =
+      err?.error || "Background remove failed";
+    console.error(err);
+  })
+  .finally(() => {
     document.getElementById("loader").style.display = "none";
   });
-}
+};
 
-document.getElementById("downloadBtn").onclick = ()=>{
+document.getElementById("downloadBtn").onclick = () => {
   const a = document.createElement("a");
   a.href = URL.createObjectURL(finalBlob);
   a.download = "background_removed.png";
