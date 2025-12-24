@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Auto Background Remover</title>
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#f4f6f8;
+  text-align:center;
+  padding:40px;
+}
+.container{
+  background:#fff;
+  padding:30px;
+  max-width:420px;
+  margin:auto;
+  border-radius:10px;
+  box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+input, button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+}
+button{
+  background:#0d6efd;
+  color:#fff;
+  border:none;
+  cursor:pointer;
+  font-size:16px;
+}
+button:hover{
+  background:#0b5ed7;
+}
+img{
+  max-width:100%;
+  margin-top:20px;
+}
+#downloadBtn{
+  display:none;
+  background:#198754;
+}
+.loader{
+  display:none;
+  margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Auto Background Remover</h2>
+
+  <input type="file" id="fileInput" accept="image/*">
+  <button onclick="removeBg()">Remove Background</button>
+
+  <div class="loader" id="loader">⏳ Processing...</div>
+
+  <img id="resultImg">
+  <button id="downloadBtn">Download Image</button>
+</div>
+
+<script>
+let finalBlob = null;
+
+// 🔴 CHANGE THIS TO YOUR RENDER BACKEND URL
+const BACKEND_URL = "https://YOUR-RENDER-APP.onrender.com/remove-bg";
+
+function removeBg(){
+  const file = document.getElementById("fileInput").files[0];
+  if(!file){
+    alert("Image select karo");
+    return;
+  }
+
+  document.getElementById("loader").style.display = "block";
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  fetch(BACKEND_URL,{
+    method:"POST",
+    body:formData
+  })
+  .then(res => res.blob())
+  .then(blob => {
+    finalBlob = blob;
+    document.getElementById("resultImg").src = URL.createObjectURL(blob);
+    document.getElementById("downloadBtn").style.display = "block";
+    document.getElementById("loader").style.display = "none";
+  })
+  .catch(err=>{
+    alert("Error occurred");
+    document.getElementById("loader").style.display = "none";
+  });
+}
+
+document.getElementById("downloadBtn").onclick = ()=>{
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(finalBlob);
+  a.download = "background_removed.png";
+  a.click();
+};
+</script>
+
+</body>
+</html>
