@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About — RS GULSHAN PRAJAPATI</title>
+  <meta name="description" content="Personal portfolio website of RS GULSHAN PRAJAPATI. Clean, fast, mobile-friendly, and Netlify-ready." />
+  <meta name="theme-color" content="#0d1117" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="./IMG-20250423-WA0052.jpg" type="image/x-icon">
+  <style>
+    :root {
+      --bg: #00ff2a;
+      --panel: #033ab1;
+      --soft: #004db9;
+      --text: #ffffff;
+      --muted: #ffffff;
+      --brand: #22d3ee;
+      --accent: #a78bfa;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      --radius: 18px;
+      --gap: 16px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin:0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    :focus { outline: none; }
+    a:focus, button:focus, input:focus { outline: 3px solid rgba(34,211,238,.18); outline-offset: 3px; border-radius: 8px; }
+
+    .container { width: min(1120px, 92vw); margin: 0 auto; }
+    header { position: sticky; top: 0; z-index: 50; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); background: linear-gradient(to bottom, rgba(13,17,23,.85), rgba(13,17,23,.35)); border-bottom: 1px solid rgba(255,255,255,.06); }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: var(--gap); padding: 14px 0; }
+    .logo { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.5px; }
+    .logo-badge { width:36px; height:36px; border-radius:12px; background: linear-gradient(135deg, var(--brand), var(--accent)); display:grid; place-items:center; box-shadow: var(--shadow); font-weight:800; color:#0b1020; overflow:hidden; }
+    .logo-badge img { width: 100%; height: 100%; object-fit: cover; display:block; }
+    .nav a { opacity:.95; padding:8px 12px; border-radius:12px; font-weight:600; font-size:14px; }
+    .nav a:hover { background: rgba(214, 170, 170, 0.04); }
+    .menu { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+    .cta-btn { background: linear-gradient(135deg, var(--brand), var(--accent)); padding:10px 14px; border-radius:14px; color:#0b1020; font-weight:700; box-shadow: var(--shadow); }
+
+    .hero { padding: 96px 0 42px; }
+    .hero-wrap { display:grid; grid-template-columns: 1.15fr .85fr; gap:38px; align-items:center; }
+    .title { font-size: clamp(32px, 6vw, 54px); line-height: 1.05; font-weight: 800; letter-spacing:-.5px; margin:0; }
+    .title .grad { background: linear-gradient(135deg, var(--brand), var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .subtitle { color: var(--muted); margin-top: 14px; font-size: clamp(15px, 2.5vw, 18px); }
+
+    .hero-card { background: linear-gradient(180deg, rgba(34,211,238,.04), rgba(167,139,250,.03)); border:1px solid rgba(255,255,255,.04); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); margin-top: 20px; }
+    .badges { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0; }
+    .chip { background: #0f172a; color:#cbd5e1; border: 1px solid rgba(255,255,255,.06); padding:8px 12px; border-radius: 999px; font-size: 13px; }
+    .quick { display:flex; gap:10px; margin-top: 16px; flex-wrap:wrap; }
+    .quick a { background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.06); padding:10px 14px; border-radius:12px; font-weight:700; }
+
+    .avatar-card { background: var(--panel); border:1px solid rgba(255,255,255,.04); border-radius: var(--radius); padding: 16px; text-align:center; box-shadow: var(--shadow); }
+    .avatar img { width: 200px; height: 200px; margin: 8px auto 12px; border-radius: 24px; object-fit: cover; }
+    .socials { display:flex; justify-content:center; gap:10px; margin-top:8px; }
+    .socials a { background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.06); padding:8px 10px; border-radius:12px; font-size:14px; }
+
+    section { padding: 54px 0; }
+    .section-title { font-size: 28px; font-weight: 800; margin-bottom: 18px; text-align: center; }
+
+    .grid { display:grid; gap:16px; }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+    .card { background: var(--panel); border: 1px solid rgba(255,255,255,.04); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+    .card h3 { margin:8px 0 6px; font-size: 18px; }
+    .muted { color: var(--muted); font-size: 14px; }
+
+    .skills { display:flex; gap:10px; flex-wrap:wrap; }
+    .skill { background: #0b1220; border:1px solid rgba(255,255,255,.06); padding:10px 12px; border-radius: 12px; font-weight:600; }
+
+    .timeline { position:relative; padding-left: 18px; }
+    .timeline:before { content:""; position:absolute; left:3px; top:0; bottom:0; width:2px; background: linear-gradient(var(--brand), var(--accent)); opacity:.55; }
+    .t-item { position:relative; margin: 14px 0; }
+    .t-item:before { content:""; position:absolute; left:-2px; top:6px; width:10px; height:10px; border-radius:999px; background: var(--brand); box-shadow: 0 0 0 3px rgba(34,211,238,.12); }
+
+    .projects .card { display:flex; flex-direction:column; }
+    .thumb { aspect-ratio: 16/9; background: #0b1325; border-radius: 12px; border:1px solid rgba(255,255,255,.04); overflow:hidden; display:grid; place-items:center; font-size: 14px; color: var(--muted); }
+    .actions { display:flex; gap:8px; margin-top:auto; flex-wrap:wrap; }
+    .btn { background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.06); padding:10px 12px; border-radius: 12px; font-weight: 600; }
+    .btn.primary { background: linear-gradient(135deg, var(--brand), var(--accent)); color:#0b1020; box-shadow: var(--shadow); }
+
+    form { display:grid; gap:12px; }
+    input, textarea { background:#0b1220; border:1px solid rgba(255,255,255,.06); border-radius:12px; padding:12px 14px; color: var(--text); font-size:14px; }
+    textarea { min-height: 120px; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero { padding-top: 74px; }
+      .hero-wrap { grid-template-columns: 1fr; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .avatar img { width: 160px; height:160px; }
+    }
+
+    /* Loader */
+    #loading-overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, rgba(13,17,23,0.98), rgba(13,17,23,0.98));
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.45s cubic-bezier(.2,.9,.2,1);
+      pointer-events: auto;
+    }
+    #loading-overlay.hide { opacity: 0; pointer-events: none; }
+    .loader-wrap { display: flex; flex-direction: column; align-items: center; }
+    .ring {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: conic-gradient(from 0deg, #ff6b6b, #ffd93d, #6be4ff, #9b8cff, #ff6b6b);
+      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 12px), black calc(100% - 11px));
+      mask: radial-gradient(farthest-side, transparent calc(100% - 12px), black calc(100% - 11px));
+      animation: spin 1.1s linear infinite;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text {
+      margin-top: 12px;
+      font-weight: 700;
+      font-family: "Segoe UI", sans-serif;
+      color: var(--text);
+      font-size: 16px;
+      letter-spacing: 0.3px;
+    }
+
+    .mt-8 { margin-top: 8px; }
+    .avatar-name { font-weight:700; font-size:18px; }
+
+    /* Skip link for accessibility */
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus {
+      left: 12px;
+      top: 12px;
+      width: auto;
+      height: auto;
+      padding: 8px 12px;
+      background: #111827;
+      color: var(--text);
+      border-radius: 6px;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Loading overlay -->
+  <div id="loading-overlay" role="status" aria-label="Loading content">
+    <div class="loader-wrap">
+      <div class="ring" aria-hidden="true"></div>
+      <div class="loading-text">Loading…</div>
+    </div>
+  </div>
+
+  <script>
+    // hide loader when page fully loads (images, fonts, etc.)
+    window.addEventListener('load', () => {
+      const overlay = document.getElementById('loading-overlay');
+      if (!overlay) return;
+      overlay.classList.add('hide');
+      // remove from DOM after animation so it's not announced by screen readers
+      setTimeout(() => {
+        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+      }, 600);
+    });
+    // safety: if load never fires (rare), remove overlay after 8s
+    setTimeout(() => {
+      const overlay = document.getElementById('loading-overlay');
+      if (overlay && !overlay.classList.contains('hide')) {
+        overlay.classList.add('hide');
+        setTimeout(() => { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 600);
+      }
+    }, 8000);
+  </script>
+
+  <header>
+    <div class="container nav" role="banner">
+      <div class="logo" aria-hidden="false">
+        <div class="logo-badge"><img class="logo-img" src="./IMG-20250423-WA0052.jpg" alt="RS GULSHAN PRAJAPATI logo" width="36" height="36"></div>
+        <div>RS GULSHAN PRAJAPATI</div>
+      </div>
+
+      <nav class="menu" role="navigation" aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+        <a class="cta-btn" href="#contact">Hire Me</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="container hero-wrap">
+        <div>
+          <h1 class="title">Hi, I’m <span class="grad">RS GULSHAN PRAJAPATI</span> — Web & Apps Developer</h1>
+          <p class="subtitle">We create websites that are completely smooth and user-friendly, and design apps that meet users' expectations.</p>
+
+          <div class="hero-card">
+            <div class="badges">
+              <span class="chip">HTML • CSS • JS</span>
+              <span class="chip">React (optional)</span>
+              <span class="chip">Blogger • SEO</span>
+              <span class="chip">Freelance Available</span>
+            </div>
+            <div class="quick">
+              <a href="#projects" class="btn primary">See Projects</a>
+              <a href="#contact" class="btn primary">Contact Now</a>
+              <a href="./My%20Resume.pdf" class="btn primary" download>Download CV</a>
+            </div>
+          </div>
+        </div>
+
+        <aside class="avatar-card" aria-label="Profile card">
+          <img src="./IMG-20250423-WA0052.jpg" alt="RS GULSHAN PRAJAPATI" />
+          <div class="avatar-name">RS GULSHAN PRAJAPATI</div>
+          <div class="muted">Based in India • Available for work</div>
+          <div class="socials" role="navigation" aria-label="Social links">
+            <a href="https://github.com/dashboard" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://www.linkedin.com/in/rs_gulshan_prajapati" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://x.com/RsGulshan/highlights" target="_blank" rel="noopener noreferrer">Twitter</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <h2 class="section-title">About</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <p>I am from Dariyapur village in Sheikhpura district of Bihar state, India. I completed my 10th and 12th grades from BSEB (Bihar School Examination Board) and my BCA from Munger University. I am currently pursuing my MCA.</p>
+            <p class="muted">My goal is to make everyone digitally literate and empower them to access digital assistance anytime, anywhere. We are working hard to achieve this goal, and we have already launched several websites and apps. If you have any suggestions, please contact us using the contact number provided below or by filling out and submitting our contact form.</p>
+          </div>
+          <div class="card timeline" aria-hidden="false">
+            <div class="t-item">
+              <strong>2025 — Present</strong>
+              <div class="muted">Freelance Frontend Developer</div>
+            </div>
+            <div class="t-item">
+              <strong>2023 — 2024</strong>
+              <div class="muted">Built educational blogs & Android WebView apps</div>
+            </div>
+            <div class="t-item">
+              <strong>2022</strong>
+              <div class="muted">Started coding with HTML/CSS/JS</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container">
+        <h2 class="section-title">Skills</h2>
+        <div class="card">
+          <div class="skills">
+            <span class="skill">HTML5</span>
+            <span class="skill">CSS3</span>
+            <span class="skill">JavaScript</span>
+            <span class="skill">React</span>
+            <span class="skill">Tailwind</span>
+            <span class="skill">Android WebView</span>
+            <span class="skill">SEO Basics</span>
+            <span class="skill">Netlify</span>
+            <span class="skill">Node.js</span>
+            <span class="skill">Express.js</span>
+            <span class="skill">MongoDB</span>
+            <span class="skill">Git</span>
+            <span class="skill">GitHub</span>
+            <span class="skill">MS Office</span>
+            <span class="skill">Photoshop</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="projects">
+      <div class="container">
+        <h2 class="section-title">Projects</h2>
+        <div class="grid grid-3">
+          <article class="card">
+            <div class="thumb"><img src="./blog.png" alt="GK Blog screenshot"></div>
+            <h3>GK Blog (Blogger)</h3>
+            <p class="muted">Hindi GK questions, study tips, and exam updates. Optimized for mobile and fast load.</p>
+            <div class="actions">
+              <a class="btn" href="https://gyankibate6.blogspot.com/" target="_blank" rel="noopener noreferrer">Live Demo</a>
+              <a class="btn" href="https://gyankibate6.blogspot.com/" target="_blank" rel="noopener noreferrer">Source</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="thumb"><img src="./app%20pic.jpg" alt="WebView Android app screenshot"></div>
+            <h3>WebView Android App</h3>
+            <p class="muted">Simple Android app that wraps a website with back/forward/home buttons.</p>
+            <div class="actions">
+              <a class="btn" href="https://github.com/GULSHANDIGITALZONE/my-app/releases/download/v1.0.0/Gyan_Ki_Bate.apk" target="_blank" rel="noopener noreferrer">APK</a>
+              <a class="btn" href="https://github.com/GULSHANDIGITALZONE/-" target="_blank" rel="noopener noreferrer">Code</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="thumb">Screenshot / Image</div>
+            <h3>Calculator (Kotlin)</h3>
+            <p class="muted">Clean two-line display, history view, and copy result.</p>
+            <div class="actions">
+              <a class="btn" href="#" target="_blank" rel="noopener noreferrer">Read More</a>
+              <a class="btn" href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <h2 class="section-title">Contact</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <form name="contact" >
+              <!-- <button onclick="openFull()">⛶</button>
+              <script>
+                   function openFull() {
+                window.open("https://developercontect.netlify.app/", "_blank");
+                       }
+              </script> -->
+
+             <iframe width="100%" height="650px" src="./feedback/feedback.html" frameborder="0"></iframe>
+            </form>
+      
+          </div>
+
+          <div class="card">
+            <h3>Also available at</h3>
+            <p class="muted">Email: gulshanshk6@gmail.com</p>
+            <p class="muted">Phone: +91-6299050695</p>
+            <div class="badges">
+              <a class="chip" href="https://wa.me/916299050695" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+              <a class="chip" href="https://t.me/yourid" target="_blank" rel="noopener noreferrer">Telegram</a>
+              <a class="chip" href="https://youtube.com/@yourid" target="_blank" rel="noopener noreferrer">YouTube</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<!-- aria-label="Footer content" -->
+
+    <!-- <script>
+      fetch("https://gulshandigitalzone.netlify.app/footer")
+        .then(response => response.text())
+        .then(data => document.getElementById("footer").innerHTML = data)
+        .catch(err => console.error("Footer load error:", err));
+
+    </script> -->
+             <!-- <iframe src="https://gulshandigitalzone.netlify.app/footer" style="width:100%; height:100vh; border:0;" id="footerFrame"></iframe> -->
+<script>
+  async function loadFragment(url, targetId) {
+    try {
+      const res = await fetch(url, { mode: 'cors' });
+      if (!res.ok) throw new Error(`HTTP ${res.status} - ${res.statusText}`);
+      const html = await res.text();
+      const el = document.getElementById(targetId);
+      if (!el) throw new Error(`Target element #${targetId} not found`);
+      el.innerHTML = html;
+      console.log(`Loaded ${url} → #${targetId}`);
+    } catch (err) {
+      console.error(`Error loading ${url}:`, err);
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.innerHTML = `<div style="padding:12px; background:#fff4f4; color:#900; border:1px solid #f5c2c2;">
+          Error loading content. Check console (Ctrl+Shift+J).
+        </div>`;
+      }
+    }
+  }
+
+  // use correct paths — change if filenames अलग हैं
+  // अगर Header.html और footer.html same site पर हैं तो relative path बेहतर है
+  loadFragment('/Header.html', 'site-header');
+  loadFragment('/footer.html', 'site-footer');
+</script>
+  
+<div id="site-footer"></div>
+
+</body>
+</html>
